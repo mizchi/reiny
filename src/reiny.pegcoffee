@@ -3,17 +3,67 @@
   ctx.indentStack = []
   ctx.indent = ""
 }
+
 start = program
-program = lines:lines { type: 'program', children: lines}
-lines = lines:line* {lines}
-line
-  = SAMEDENT e:expr + EOL?
-    children: ( INDENT c:line* DEDENT { c })?
+program = lines:line* { type: 'program', body: lines}
+
+line = SAMEDENT node:(element / comment / inlineCode) EOL? {node}
+
+element = s:assignable props:props? EOL? children: ( INDENT c:line* DEDENT { c })?
+  {
+    {type: 'element', value: s, children, props}
+  }
+  assignable
+    =
+      elementName: symbol modifiers:modifier*
+      {
+        type: elementName
+        modifiers: modifiers
+      }
+    /
+      modifiers:modifier+
+      {
+        type: 'div'
+        modifiers: modifiers
+      }
+  modifier = className / id
+  className = '.' className:symbol {type: 'className', value:className}
+  id = '#' id:symbol {type: 'id', value: id}
+
+  props = "(" __ props:(p:property __ {p})* ")"
     {
-      {type: 'line', value: e, children}
+      type: 'props'
+      children: props
+    }
+  property = symbol __ '=' __ value:value
+    {
+      type: 'property'
+      value: value
     }
 
-expr = $([a-zA-Z\d]+)
+symbol = $([a-zA-Z] [a-zA-Z\d]*)
+value = number / string / identifier
+
+identifier = symbol:symbol {type: 'identifier', value: symbol}
+string
+  = "\"" value: symbol "\"" {type: 'string', value: value}
+  / "\'" value: symbol "\'" {type: 'string', value: value}
+number = digits:digits {type: 'number', value: digits}
+digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
+
+
+_ = [ \n\t\r]
+__ = _*
+
+comment = '#' value:$([a-zA-Z\d ]*)
+  {
+    {type: 'comment', value}
+  }
+
+inlineCode = '-' value: $([a-zA-Z\d ]*)
+  {
+    {type: 'comment', value}
+  }
 
 EOL = "\r\n" / "\n" / "\r"
 

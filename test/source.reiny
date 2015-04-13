@@ -1,5 +1,9 @@
-a
-  f
-t
-  c
-  d
+prop(a=b c=d
+  x=y d=3
+)
+span.a#id(a=b)
+  p.f
+  # foo
+- foo
+.t
+  b#d
