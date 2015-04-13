@@ -68,7 +68,7 @@ comment = '//' value:$([a-zA-Z\d ]*)
 
 inlineCode = '-' value: $([a-zA-Z\d ]*)
   {
-    {type: 'comment', value}
+    {type: 'inlineCode', value}
   }
 
 EOL = "\r\n" / "\n" / "\r"
