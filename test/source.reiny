@@ -1,9 +1,10 @@
 prop(a=b c=d
   x=y d=3
-)
+){a=3}
+  a
 span.a#id(a=b)
   p.f
-  # foo
+  // foo
 - foo
 .t
   b#d

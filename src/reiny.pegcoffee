@@ -9,9 +9,9 @@ program = lines:line* { type: 'program', body: lines}
 
 line = SAMEDENT node:(element / comment / inlineCode) EOL? {node}
 
-element = s:assignable props:props? EOL? children: ( INDENT c:line* DEDENT { c })?
+element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:line* DEDENT { c })?
   {
-    {type: 'element', value: s, children, props}
+    {type: 'element', value: s, children, props, styles}
   }
   assignable
     =
@@ -35,6 +35,12 @@ element = s:assignable props:props? EOL? children: ( INDENT c:line* DEDENT { c }
       type: 'props'
       children: props
     }
+
+  styles = "{" __ props:(p:property __ {p})* "}"
+    {
+      type: 'styles'
+      children: props
+    }
   property = symbol __ '=' __ value:value
     {
       type: 'property'
@@ -55,7 +61,7 @@ digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
 _ = [ \n\t\r]
 __ = _*
 
-comment = '#' value:$([a-zA-Z\d ]*)
+comment = '//' value:$([a-zA-Z\d ]*)
   {
     {type: 'comment', value}
   }
