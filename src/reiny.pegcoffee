@@ -1,25 +1,39 @@
+{
+  global.ctx = {}
+  ctx.indentStack = []
+  ctx.indent = ""
+}
 start = program
+program = lines:lines { type: 'program', children: lines}
+lines = lines:line* {lines}
+line
+  = SAMEDENT e:expr + EOL?
+    children: ( INDENT c:line* DEDENT { c })?
+    {
+      {type: 'line', value: e, children}
+    }
 
-program = "a" __ "{" __ "a" __ "}" '\n'?
+expr = $([a-zA-Z\d]+)
 
-INDENT = ws:__ "\uEFEF" { ws }
-DEDENT = ws:$(TERMINATOR? _) "\uEFFE" { ws }
+EOL = "\r\n" / "\n" / "\r"
 
-TERM
-  = $("\r"? "\n")
-  / "\uEFFF" { '' }
+SAMEDENT
+  = i:[ \t]* &{
+    i.join('') is ctx.indent
+  }
 
-TERMINATOR = $((_ comment? TERM blockComment?)+)
-TERMINDENT = $(TERMINATOR INDENT)
+INDENT
+  = &(
+      i:[ \t]+ &{
+        i.length > ctx.indent.length
+      }
+      {
+        ctx.indentStack.push(ctx.indent)
+        ctx.indent = i.join("")
+      }
+    )
 
-comment =  blockComment / singleLineComment
-singleLineComment = $("#" (!TERM .)*)
-blockComment = $("###" [^#] ([^#] / "#" "#"? !"#")* "###")
-
-__ = $(whitespace+ (blockComment whitespace+)?)
-_ = __?
-
-whitespace
-  = [\u0009\u000B\u000C\u0020\u00A0\uFEFF\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
-  / "\r" // ignored to support windows line endings
-  / $("\\" "\r"? "\n")
+DEDENT
+  = {
+    ctx.indent = ctx.indentStack.pop()
+  }

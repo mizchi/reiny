@@ -9,4 +9,7 @@ source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
 
 # Run
 parser = PEG.buildParser grammar, plugins: [coffee]
-console.log parser.parse source
+util = require 'util'
+
+# console.log util.inspect parser.parse source, false, null
+console.log util.inspect (parser.parse source), {depth: null}
