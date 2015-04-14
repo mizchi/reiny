@@ -1,15 +1,14 @@
-PEG = require 'pegjs'
-coffee = require 'pegjs-coffee-plugin'
-
-# Define your grammar
 fs = require 'fs'
 path = require 'path'
-grammar = fs.readFileSync(path.join __dirname, '../src/reiny.pegcoffee').toString()
-source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
+beautify = require('js-beautify').js_beautify
+
+compile = require '../src/compiler'
+parse = require '../src/parser'
 
 # Run
-parser = PEG.buildParser grammar, plugins: [coffee]
-util = require 'util'
+source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
+ast = parse(source)
+code = compile(ast)
 
-# console.log util.inspect parser.parse source, false, null
-console.log util.inspect (parser.parse source), {depth: null}
+console.log beautify(code, indent_size: 2)
+# console.log util.inspect ast, {depth: null}

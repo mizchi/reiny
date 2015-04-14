@@ -1,10 +1,6 @@
-prop(a=b c=d
+- var onClick = (e) => e.preventDefault();
+node.a(a=b c=d
   x=y d=3
+  onClick=onClick
 ){a=3}
   a
-span.a#id(a=b)
-  p.f
-  // foo
-- foo
-.t
-  b#d

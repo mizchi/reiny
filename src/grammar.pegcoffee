@@ -7,7 +7,9 @@
 start = program
 program = lines:line* { type: 'program', body: lines}
 
-line = SAMEDENT node:(element / comment / inlineCode) EOL? {node}
+line = SAMEDENT node:(
+  forStatement / ifStatement / element / comment / inlineCode
+  ) EOL? {node}
 
 element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:line* DEDENT { c })?
   {
@@ -17,18 +19,21 @@ element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:lin
     =
       elementName: symbol modifiers:modifier*
       {
-        type: elementName
+        type: 'element'
+        elementType: elementName
         modifiers: modifiers
       }
     /
       modifiers:modifier+
       {
-        type: 'div'
+        type: 'element'
+        elementType: 'div'
         modifiers: modifiers
       }
-  modifier = className / id
+  modifier = className / id / ref
   className = '.' className:symbol {type: 'className', value:className}
   id = '#' id:symbol {type: 'id', value: id}
+  ref = '&' ref:symbol {type: 'ref', value: ref}
 
   props = "(" __ props:(p:property __ {p})* ")"
     {
@@ -41,11 +46,28 @@ element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:lin
       type: 'styles'
       children: props
     }
-  property = symbol __ '=' __ value:value
+  property = key:symbol __ '=' __ value:value
     {
       type: 'property'
       value: value
+      key: key
     }
+
+children = EOL? children: ( INDENT c:line* DEDENT { c }) {children}
+
+// TODO: fix statement
+ifStatement = 'if ' condition:value children:children {
+  type: 'if'
+  condition: condition
+  body: children
+}
+
+forStatement = 'for' __ left:identifier __ "in" __ right:identifier children:children {
+  type: 'for'
+  left: left
+  right: right
+  body: children
+}
 
 symbol = $([a-zA-Z] [a-zA-Z\d]*)
 value = number / string / identifier
@@ -66,7 +88,8 @@ comment = '//' value:$([a-zA-Z\d ]*)
     {type: 'comment', value}
   }
 
-inlineCode = '-' value: $([a-zA-Z\d ]*)
+//inlineCode = '-' value: $([a-zA-Z\d ]*)
+inlineCode = '-' value: $((!'\n' .)*)
   {
     {type: 'inlineCode', value}
   }
