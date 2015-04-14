@@ -1,4 +1,3 @@
-
 # postprocess
 Babel = require "babel-core"
 CoffeeScript = require 'coffee-script'
@@ -50,31 +49,19 @@ expandObj = (obj) ->
 module.exports = compile = (node) ->
   switch node.type
     when 'program'
-      if node.body.length is 0
-        """
-        function(){
-          return vk.compile(function($){
-            $('div')
-          });
-        }
-        """
-      # else if body.length is 1
-      #   """
-      #   function () {
-      #     return React.createElement("div");
-      #   }
-      #   """
-      else
-        codes = node.body.map (n) -> compile(n)
-
-        """
-        function(){
-          return vk.compile(function($){
+      codes = node.body.map (n) -> compile(n)
+      """
+      global.React = require('react');
+      module.exports = function() {
+      var runtime = require('coppe');
+      return runtime(function($){
+      // ----- start -----
         #{codes.join('\n')}
-
-          });
-        }
-        """
+      // ----- end ----
+      });
+      }
+      console.log(React.renderToStaticMarkup(module.exports()));
+      """
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props

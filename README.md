@@ -30,8 +30,10 @@ from
 a.link(
   href='/foo'
   onClick=onClick
-){backgroundColor=red}
-  span
+){
+  backgroundColor=red
+}
+  a
 ```
 
 to
@@ -43,16 +45,16 @@ function() {
     var onClick = function onClick(e) {
       return e.preventDefault();
     };
-    $('node', {
+    $('', {
       a: b,
       c: d,
       x: y,
       d: 3,
       onClick: onClick,
       style: {
-        a: 3
+        backgroundColor: red
       },
-      className: a
+      className: 'link'
     }, function() {
       $('a', {
         className: ''

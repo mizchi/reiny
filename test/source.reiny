@@ -1,6 +1,8 @@
-- var onClick = (e) => e.preventDefault();
-node.a(a=b c=d
-  x=y d=3
+- let onClick = (e) => e.preventDefault();
+- let bgColor = 'red';
+div(
   onClick=onClick
-){a=3}
-  a
+){
+  backgroundColor = bgColor
+}
+  a(key=1)

@@ -9,11 +9,15 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "espower-coffee": "^0.10.0",
+    "power-assert": "^0.10.2",
     "react": "facebook/react#3c174cacc9428a7d5bf9cc31624010c0004bfc73"
   },
   "dependencies": {
+    "ast-types": "^0.7.6",
     "babel-core": "^5.1.7",
     "coffee-script": "^1.9.1",
+    "coppe": "^0.1.0",
     "pegjs": "^0.8.0",
     "uuid": "^2.0.1"
   }
