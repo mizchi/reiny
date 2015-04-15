@@ -7,11 +7,11 @@
 start = program
 program = lines:line* { type: 'program', body: lines}
 
-line = SAMEDENT node:(
+line = samedent node:(
   forStatement / ifStatement / element / comment / inlineCode
   ) EOL? {node}
 
-element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:line* DEDENT { c })?
+element = s:assignable props:props? styles:styles? EOL? children: ( indent c:line* dedent { c })?
   {
     {type: 'element', value: s, children, props, styles}
   }
@@ -46,14 +46,14 @@ element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:lin
       type: 'styles'
       children: props
     }
-  property = key:symbol __ '=' __ value:value
+  property = key:symbol __ '=' __ expr: expr
     {
       type: 'property'
-      value: value
       key: key
+      expr: expr
     }
 
-children = EOL? children: ( INDENT c:line* DEDENT { c }) {children}
+children = EOL? children: ( indent c:line* dedent { c }) {children}
 
 // TODO: fix statement
 ifStatement = 'if ' condition:value children:children {
@@ -70,15 +70,20 @@ forStatement = 'for' __ left:identifier __ "in" __ right:identifier children:chi
 }
 
 symbol = $([a-zA-Z] [a-zA-Z\d]*)
-value = number / string / identifier
+
+expr = value
+value = number / string / identifier / boolean
 
 identifier = symbol:symbol {type: 'identifier', value: symbol}
 string
   = "\"" value: symbol "\"" {type: 'string', value: value}
   / "\'" value: symbol "\'" {type: 'string', value: value}
+
 number = digits:digits {type: 'number', value: digits}
 digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
 
+boolean = bool {type: 'boolean', value: bool}
+bool = "true" / "false"
 
 _ = [ \n\t\r]
 __ = _*
@@ -96,12 +101,12 @@ inlineCode = '-' value: $((!'\n' .)*)
 
 EOL = "\r\n" / "\n" / "\r"
 
-SAMEDENT
+samedent
   = i:[ \t]* &{
     i.join('') is ctx.indent
   }
 
-INDENT
+indent
   = &(
       i:[ \t]+ &{
         i.length > ctx.indent.length
@@ -112,7 +117,7 @@ INDENT
       }
     )
 
-DEDENT
+dedent
   = {
     ctx.indent = ctx.indentStack.pop()
   }

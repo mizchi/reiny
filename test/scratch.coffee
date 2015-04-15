@@ -10,5 +10,8 @@ source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
 ast = parse(source)
 code = compile(ast)
 
-console.log beautify(code, indent_size: 2)
+header = "global.React = require('react');\n"
+
+code = beautify(code, indent_size: 2);
+console.log header + beautify(code, indent_size: 2)
 # console.log util.inspect ast, {depth: null}

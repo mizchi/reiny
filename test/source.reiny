@@ -3,6 +3,7 @@
 div(
   onClick=onClick
 ){
-  backgroundColor = bgColor
+  backgroundColor = 'red'
+  hoge = true
 }
   a(key=1)

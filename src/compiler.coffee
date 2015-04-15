@@ -3,25 +3,32 @@ Babel = require "babel-core"
 CoffeeScript = require 'coffee-script'
 
 code = ''
-flatNodes = (nodes) ->
-  codes = compile(nodes)
-  arr = '[' + codes.join(',') + ']'
-  code = """
-  #{arr}.map(function(i){return i();}).filter(function(i){return i != null;});
-  """
+
+expr2code = (expr) ->
+  switch expr.type
+    when 'string'
+      "\'#{expr.value}\'"
+    when 'number'
+      "#{expr.value}"
+    when 'boolean'
+      "#{expr.value}"
+    when 'identifier'
+      "#{expr.value}"
+    else
+      throw 'unknown node'
 
 buildProps = (node) ->
   obj = {}
 
   if node.props?
     for i in node.props.children
-      obj[i.key] = i.value.value
+      obj[i.key] = expr2code(i.expr)
 
   # style
   if node.styles?
     style = {}
     for s in node.styles.children
-      style[s.key] = s.value.value
+      style[s.key] = expr2code(s.expr)
     obj.style = style
 
   # classes and id
@@ -51,9 +58,8 @@ module.exports = compile = (node) ->
     when 'program'
       codes = node.body.map (n) -> compile(n)
       """
-      global.React = require('react');
-      module.exports = function() {
       var runtime = require('coppe');
+      module.exports = function() {
       return runtime(function($){
       // ----- start -----
         #{codes.join('\n')}
