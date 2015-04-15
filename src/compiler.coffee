@@ -13,7 +13,8 @@ expr2code = (expr) ->
     when 'boolean'
       "#{expr.value}"
     when 'identifier'
-      "#{expr.value}"
+      # "#{expr.value}"
+      "(__props\.#{expr.value}||#{expr.value})"
     else
       throw 'unknown node'
 
@@ -58,7 +59,8 @@ module.exports = compile = (node) ->
     when 'program'
       codes = node.body.map (n) -> compile(n)
       """
-      function() {
+      function(__props) {
+      if(__props == null) __props = {};
       return runtime(function($){
       // ----- start -----
         #{codes.join('\n')}
@@ -92,12 +94,13 @@ module.exports = compile = (node) ->
       """
 
     when 'for'
-      children = node.body.map (child) -> compile(child)
-      childrenSrc = children.join(';')
+      bodyCode = node.body
+        .map (child) -> compile(child)
+        .join(';')
       """
-      for(var __i in #{node.right.value}) {
-        var #{node.left.value} = #{node.right.value}[__i];
-        #{childrenSrc}
+      for(var __i in #{expr2code node.right}) {
+        var #{node.left.value} = #{expr2code node.right}[__i];
+        #{bodyCode};
       }
       """
     else
