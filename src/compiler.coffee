@@ -71,15 +71,16 @@ module.exports = compile = (node) ->
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props
-
       elementType = node.value.elementType
 
-      children = node.children?.map (child) -> compile(child)
-
-      childrenSrc = 'function(){' + (children?.join(';') ? '') + '}'
-      """
-      $('#{elementType}', #{propsStr}, #{childrenSrc})
-      """
+      if node.children?.type in ['identifier', 'boolean', 'number', 'string']
+        "$('#{elementType}', #{propsStr}, #{expr2code node.children})"
+      else if node.children?.length > 0
+        children = node.children?.map (child) -> compile(child)
+        childrenSrc = 'function(){' + (children?.join(';') ? '') + ';}'
+        "$('#{elementType}', #{propsStr}, #{childrenSrc})"
+      else
+        "$('#{elementType}', #{propsStr})"
 
     when 'inlineCode'
       code = Babel.transform(node.value).code

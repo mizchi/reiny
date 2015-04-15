@@ -1,12 +1,14 @@
 - let onClick = (e) => e.preventDefault();
 - let items = [1, 2, 3]
+- let foo = 'hogefuga'
 div(
   onClick=onClick
 ){
   backgroundColor = 'red'
 }
+  span = foo
   ul
     for i in items
-      li(key=i)
+      li(key=i) = i
   if true
     a(key=1)

@@ -11,10 +11,13 @@ line = SAMEDENT node:(
   forStatement / ifStatement / element / comment / inlineCode
   ) EOL? {node}
 
-element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:line* DEDENT { c })?
+element = s:assignable props:props? styles:styles? EOL? children: _elementChildren?
   {
     {type: 'element', value: s, children, props, styles}
   }
+  _elementChildren
+    = __ '=' __ expr: expr {expr}
+    / INDENT c:line* DEDENT { c }
   assignable
     =
       elementName: symbol modifiers:modifier*
