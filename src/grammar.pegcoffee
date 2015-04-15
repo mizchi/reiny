@@ -11,7 +11,7 @@ line = samedent node:(
   forStatement / ifStatement / element / comment / inlineCode
   ) EOL? {node}
 
-element = s:assignable props:props? styles:styles? EOL? children: ( indent c:line* dedent { c })?
+element = s:assignable props:props? _* styles:styles? EOL? children: ( indent c:line* dedent { c })?
   {
     {type: 'element', value: s, children, props, styles}
   }
@@ -56,9 +56,9 @@ element = s:assignable props:props? styles:styles? EOL? children: ( indent c:lin
 children = EOL? children: ( indent c:line* dedent { c }) {children}
 
 // TODO: fix statement
-ifStatement = 'if ' condition:value children:children {
+ifStatement = 'if' _+ expr:expr children:children {
   type: 'if'
-  condition: condition
+  condition: expr
   body: children
 }
 

@@ -1,9 +1,9 @@
 - let onClick = (e) => e.preventDefault();
-- let bgColor = 'red';
 div(
   onClick=onClick
-){
+) {
   backgroundColor = 'red'
   hoge = true
 }
-  a(key=1)
+  if true
+    a(key=1)
