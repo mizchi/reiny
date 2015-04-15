@@ -2,11 +2,12 @@
 - let items = [1, 2, 3]
 div(
   onClick=onClick
-) {
+){
   backgroundColor = 'red'
   hoge = true
 }
   for i in items
+    hr
     div
   if true
     a(key=1)
