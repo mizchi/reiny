@@ -87,10 +87,10 @@ module.exports = compile = (node) ->
 
     when 'if'
       children = node.body.map (child) -> compile(child)
-      childrenSrc = '(function(){' + (children?.join(';') ? '') + '})'
+      childrenSrc = children.join(';')
       condSrc = expr2code node.condition
       """
-      if(#{condSrc}) { #{childrenSrc}(); }
+      if(#{condSrc}) { #{childrenSrc} }
       """
 
     when 'for' then throw 'not implement yet'
