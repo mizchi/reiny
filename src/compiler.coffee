@@ -93,6 +93,11 @@ module.exports = compile = (node) ->
       if(#{condSrc}) { #{childrenSrc} }
       """
 
-    when 'for' then throw 'not implement yet'
+    when 'for'
+      children = node.body.map (child) -> compile(child)
+      childrenSrc = children.join(';')
+      """
+      for(var #{node.left.value} in #{node.right.value}) {#{childrenSrc}}
+      """
     else
       throw 'unknow node: ' + node.type

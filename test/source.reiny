@@ -1,9 +1,12 @@
 - let onClick = (e) => e.preventDefault();
+- let items = [1, 2, 3]
 div(
   onClick=onClick
 ) {
   backgroundColor = 'red'
   hoge = true
 }
+  for i in items
+    div
   if true
     a(key=1)
