@@ -17,13 +17,13 @@ parse = require '../src/parser'
 source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
 ast = parse(source)
 
-console.log(inspect ast, {depth: null});
+# console.log(inspect ast, {depth: null});
 
 code = compile(ast)
 
-pre = "global.React = require('react');\n"
-post = ""
-
-code = beautify(code, indent_size: 2);
-console.log pre + beautify(code, indent_size: 2) + post
-# console.log util.inspect ast, {depth: null}
+console.log """
+global.React = require('react');
+var runtime = require('coppe');
+module.exports = #{beautify(code, indent_size: 2)}
+console.log(React.renderToStaticMarkup(module.exports()));
+"""

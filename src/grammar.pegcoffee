@@ -56,13 +56,13 @@ element = s:assignable props:props? styles:styles? EOL? children: ( INDENT c:lin
 children = EOL? children: ( INDENT c:line* DEDENT { c }) {children}
 
 // TODO: fix statement
-ifStatement = 'if ' condition:value children:children {
+ifStatement = 'if' _+ condition:value children:children {
   type: 'if'
   condition: condition
   body: children
 }
 
-forStatement = 'for' __ left:identifier __ "in" __ right:identifier children:children {
+forStatement = 'for' _+ left:identifier _+ "in" _+ right:identifier children:children {
   type: 'for'
   left: left
   right: right

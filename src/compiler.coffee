@@ -58,15 +58,13 @@ module.exports = compile = (node) ->
     when 'program'
       codes = node.body.map (n) -> compile(n)
       """
-      var runtime = require('coppe');
-      module.exports = function() {
+      function() {
       return runtime(function($){
       // ----- start -----
         #{codes.join('\n')}
       // ----- end ----
       });
       }
-      console.log(React.renderToStaticMarkup(module.exports()));
       """
     when 'element'
       props = buildProps(node)
@@ -97,7 +95,10 @@ module.exports = compile = (node) ->
       children = node.body.map (child) -> compile(child)
       childrenSrc = children.join(';')
       """
-      for(var #{node.left.value} in #{node.right.value}) {#{childrenSrc}}
+      for(var __i in #{node.right.value}) {
+        var #{node.left.value} = #{node.right.value}[__i];
+        #{childrenSrc}
+      }
       """
     else
       throw 'unknow node: ' + node.type

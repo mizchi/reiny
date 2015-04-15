@@ -4,10 +4,9 @@ div(
   onClick=onClick
 ){
   backgroundColor = 'red'
-  hoge = true
 }
-  for i in items
-    hr
-    div
+  ul
+    for i in items
+      li(key=i)
   if true
     a(key=1)
