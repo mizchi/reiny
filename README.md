@@ -19,11 +19,12 @@ Template engine for React
 - [x] Embeded Code
 - [x] Unicode
 - [x] Inline value
-- [ ] Inject global variables
-- [ ] Vriable as element type
+- [x] Vriable as element type
+- [ ] Inject shared helper
 - [ ] gulp plugin
 - [ ] browserify plugin
 - [ ] Agnostic inlineCode posteprocess
+- [ ] CLI interface
 - [ ] Type Parameters statement for React propTypes
 
 ## Example
