@@ -13,7 +13,7 @@ parse = require '../src/parser'
 #
 
 # source
-source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
+source = fs.readFileSync(path.join __dirname, 'for.reiny').toString()
 ast = parse(source)
 
 console.error(inspect ast, {depth: null});

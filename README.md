@@ -13,11 +13,11 @@ Everything doesn't work.
 
 ## TODO
 
-- [ ] Text Node
-- [ ] IfStatement
-- [ ] ForStatement
+- [x] Text Node
+- [x] IfStatement
+- [x] ForStatement
 - [ ] inline value
-- [ ] Runtime
+- [x] Runtime
 - [ ] Agnostic inlineCode posteprocess
 - [ ] Arda mixin
 

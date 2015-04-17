@@ -62,19 +62,19 @@ text = '|' + text:toTheEndOfLine {type: 'text', value: text}
 
 toTheEndOfLine = text:$((!EOL .)+) EOL {text}
 
-children = EOL? children: ( INDENT c:line* DEDENT { c }) {children}
+block = children: ( INDENT c:line* DEDENT { c }) {children}
 
 // TODO: fix statement
-ifStatement = 'if' _+ condition:value children:children {
+ifStatement = 'if' _+ condition:toTheEndOfLine children:block {
   type: 'if'
-  condition: condition
+  condition: {type: 'free', value: condition}
   body: children
 }
 
-forStatement = 'for' _+ left:identifier _+ "in" _+ right:identifier children:children {
+forStatement = 'for' _+ left:identifier _+ "in" _+ right:toTheEndOfLine children:block {
   type: 'for'
   left: left
-  right: right
+  right: {type: 'free', value: right}
   body: children
 }
 

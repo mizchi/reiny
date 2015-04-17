@@ -38,6 +38,8 @@ expandObj = (obj) ->
         k + ':' + v
   '{' + kv.join(',') + '}'
 
+compileCode = (text) ->
+
 module.exports = compile = (node) ->
   switch node.type
     when 'program'
@@ -72,6 +74,13 @@ module.exports = compile = (node) ->
       code = Babel.transform(node.value).code
       code.replace('\"use strict\";\n', '')
 
+    when 'free'
+      node.value
+      # code = Babel.transform(node.value).code
+      # # code.replace('\"use strict\";\n', '')
+      # c = code.replace('\"use strict\";\n', '')
+      # c[0...(c.length - 1)]
+
     when 'if'
       children = node.body.map (child) -> compile(child)
       childrenCode = children.join(';')
@@ -83,7 +92,8 @@ module.exports = compile = (node) ->
 
     when 'for'
       bodyCode = node.body
-        .map (child) -> compile(child) + ';'
+        .map (c) -> compile(c) + ';'
+        .join('')
       """
       for(var __i in #{compile node.right}) {
         var #{node.left.value} = #{compile node.right}[__i];
