@@ -1,14 +1,21 @@
 ` let onClick = (e) => e.preventDefault();
+` let items = [1, 2, 3];
 
 ```
-let items = [1, 2, 3]
-let foo = 'hogefuga'
+let Foo = React.createClass({
+  render: () => {
+    return React.createElement('div', {className: 'foo'});
+  }
+})
 ```
 
 div(onClick = onClick) {
   backgroundColor = 'red'
 }
   // foo
+  Foo()
+
+  // unicode
   span(
     key="--🐑--"
   )

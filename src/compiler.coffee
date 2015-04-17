@@ -58,7 +58,8 @@ expandObj = (obj) ->
   else
     ret
 
-compileCode = (text) ->
+isUpperCase = (text) ->
+  text.toUpperCase() is text
 
 module.exports = compile = (node) ->
   switch node.type
@@ -75,7 +76,11 @@ module.exports = compile = (node) ->
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props
-      elementType = node.value.elementType
+      elementType =
+        if isUpperCase(node.value.elementType[0])
+          compile(type:'identifier', value:node.value.elementType)
+        else
+          node.value.elementType
 
       unless node.children
         return "$('#{elementType}', #{propsStr})"

@@ -1,8 +1,6 @@
-# Reiny
+# [WIP] Reiny
 
-WIP
-
-Everything doesn't work.
+Template engine for React
 
 ## Goal
 
@@ -13,14 +11,20 @@ Everything doesn't work.
 
 ## TODO
 
+- [x] Indent block
 - [x] Text Node
 - [x] IfStatement
 - [x] ForStatement
 - [x] Runtime
 - [x] Embeded Code
+- [x] Unicode
+- [x] Inline value
+- [ ] Inject global variables
+- [ ] Vriable as element type
+- [ ] gulp plugin
+- [ ] browserify plugin
 - [ ] Agnostic inlineCode posteprocess
-- [ ] Arda mixin
-- [x] inline value
+- [ ] Type Parameters statement for React propTypes
 
 ## Example
 
