@@ -9,8 +9,12 @@ transformCode = (code) ->
 buildProps = (node) ->
   obj = {}
 
+
   if node.props?
-    for i in node.props.children
+    obj.__mergeables = node.props.children.filter (p) -> p.type is 'mergeable-object'
+
+    props = node.props.children.filter (p) -> p.type is 'property'
+    for i in props
       obj[i.key] = compile(i.expr)
 
   # style
@@ -35,12 +39,19 @@ buildProps = (node) ->
 
 expandObj = (obj) ->
   kv =
-    for k, v of obj
+    for k, v of obj when k not in ['__mergeables']
       if v instanceof Object
         k + ': ' + expandObj(v)
       else
         k + ':' + v
-  '{' + kv.join(',') + '}'
+  ret = '{' + kv.join(',') + '}'
+  if obj.__mergeables?.length
+    objs = obj.__mergeables
+      .map (m) -> m.key
+      .join(',')
+    "xtend({}, #{objs}, #{ret})"
+  else
+    ret
 
 compileCode = (text) ->
 

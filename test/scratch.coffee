@@ -10,7 +10,7 @@ preprocess = require '../src/preprocess'
 {inspect} = require('util')
 
 # source
-source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
+source = fs.readFileSync(path.join __dirname, 'example.reiny').toString()
 try
   ast = parse preprocess source
 catch e
@@ -24,6 +24,7 @@ code = compile(ast)
 console.error """
 global.React = require('react');
 var runtime = require('coppe');
+var xtend = require('xtend');
 module.exports = #{beautify(code, indent_size: 2)}
 console.log(React.renderToStaticMarkup(module.exports()));
 """
@@ -31,6 +32,7 @@ console.log(React.renderToStaticMarkup(module.exports()));
 console.log """
 global.React = require('react');
 var runtime = require('coppe');
+var xtend = require('xtend');
 module.exports = #{beautify(code, indent_size: 2)}
 console.log(React.renderToStaticMarkup(module.exports()));
 """

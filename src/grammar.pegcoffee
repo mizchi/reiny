@@ -50,12 +50,20 @@ element = s:assignable props:props? styles:styles? children: _elementChildren?
       type: 'styles'
       children: props
     }
-  property = key:symbol __ '=' __ expr: expr
-    {
-      type: 'property'
-      key: key
-      expr: expr
+  property
+    = key:symbol __ '=' __ expr: expr
+      {
+        type: 'property'
+        key: key
+        expr: expr
+      }
+    / '>' __ key:dottableSymbol {
+      {
+        type: 'mergeable-object'
+        key: key
+      }
     }
+
 
 embededCode
   = '{-' code:$((!'-}' .)*) '-}' {type: 'embededCode', value: code}
@@ -83,12 +91,18 @@ forStatement = 'for' _+ left:identifier _+ "in" _+ right:toTheEndOfLine children
 
 expr = value
 
-symbol = $([a-zA-Z] [a-zA-Z\d]*)
-value = boolean / number / string / identifier / embededCode
+symbol = $([a-zA-Z_] [a-zA-Z\d_]*)
+hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)
+
+dottableSymbol = $(symbol ('.' symbol)*)
+value = boolean / number / string / memberAccessableIdentifier / embededCode
 
 boolean = bool:bool {type: 'boolean', value: bool}
 bool = "true" / "false"
+
 identifier = symbol:symbol {type: 'identifier', value: symbol}
+memberAccessableIdentifier = symbol:dottableSymbol {type: 'identifier', value: symbol}
+
 string
   = "\"" value: symbol "\"" {type: 'string', value: value}
   / "\'" value: symbol "\'" {type: 'string', value: value}
