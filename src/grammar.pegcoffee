@@ -89,7 +89,7 @@ comment = '//' value:toTheEndOfLine
     {type: 'comment', value}
   }
 
-code = ('-' / '`') _ value:toTheEndOfLine
+code = ('-' / '`') space+ value:toTheEndOfLine
   {
     {type: 'code', value}
   }
