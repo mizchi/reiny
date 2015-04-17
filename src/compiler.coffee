@@ -5,11 +5,10 @@ transformCode = (code) ->
   Babel.transform(code)
     .code
     .replace('\"use strict\";\n', '')
+    .replace('\'use strict\';\n', '')
 
 buildProps = (node) ->
   obj = {}
-
-
   classNames = []
 
   if node.props?
@@ -53,7 +52,7 @@ expandObj = (obj) ->
   ret = '{' + kv.join(',') + '}'
   if obj.__mergeables?.length
     objs = obj.__mergeables
-      .map (m) -> m.key
+      .map((m) -> m.key)
       .join(',')
     "xtend({}, #{objs}, #{ret})"
   else
@@ -114,7 +113,7 @@ module.exports = compile = (node) ->
 
     when 'for'
       bodyCode = node.body
-        .map (c) -> compile(c) + ';'
+        .map((c) -> compile(c) + ';')
         .join('')
       """
       for(var __i in #{compile node.right}) {

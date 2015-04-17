@@ -22,6 +22,16 @@ exports.compile = compile = (source, options = {}) ->
   module.exports = #{code};
   """
 
+exports._compile = _compile = (ast, options = {}) ->
+  compile = require './compiler'
+  code = compile(ast, options = {})
+  """
+  var reiny = require('reiny');
+  var runtime = reiny.runtime;
+  var xtend = reiny.xtend;
+  module.exports = #{code};
+  """
+
 exports.print = (source, options = {}) ->
   beautify = require('js-beautify').js_beautify
   code = compile source, options

@@ -5,18 +5,12 @@
 div{
   backgroundColor = 'red'
 }
-  // aaa
-  span = foo
-
-  span = { 'text' }
-
   ul
     for i in items
       li(key=i) = i
   if true
     a(key="fooo") hoge fuga aaa
   | aaaa bbbb
-
   ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
   ` let p = {'data-c': 3, 'data-id': 4};
   foo(
