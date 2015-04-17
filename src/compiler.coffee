@@ -54,7 +54,7 @@ expandObj = (obj) ->
     objs = obj.__mergeables
       .map((m) -> m.key)
       .join(',')
-    "xtend({}, #{objs}, #{ret})"
+    "__extend({}, #{objs}, #{ret})"
   else
     ret
 
@@ -67,7 +67,7 @@ module.exports = compile = (node) ->
       """
       function(__props) {
         if(__props == null) __props = {};
-        return runtime(function($){
+        return __runtime(function($){
           #{codes.join('\n')}
         });
       }

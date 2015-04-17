@@ -10,27 +10,25 @@ exports.parse = parse = (source) ->
     console.error e
     throw 'ast parse error'
 
+wrapCodeWithExport = (code) ->
+  """
+  "use strict";
+  var reiny = require('reiny');
+  var __runtime = reiny.runtime;
+  var __extend = reiny.xtend;
+  module.exports = #{code};
+  """
+
 exports.compile = compile = (source, options = {}) ->
   compile = require './compiler'
   ast = parse(source, options)
   code = compile(ast, options = {})
-
-  """
-  var reiny = require('reiny');
-  var runtime = reiny.runtime;
-  var xtend = reiny.xtend;
-  module.exports = #{code};
-  """
+  wrapCodeWithExport code
 
 exports._compile = _compile = (ast, options = {}) ->
   compile = require './compiler'
   code = compile(ast, options = {})
-  """
-  var reiny = require('reiny');
-  var runtime = reiny.runtime;
-  var xtend = reiny.xtend;
-  module.exports = #{code};
-  """
+  wrapCodeWithExport code
 
 exports.print = (source, options = {}) ->
   beautify = require('js-beautify').js_beautify
