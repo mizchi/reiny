@@ -1,13 +1,22 @@
-# [WIP] Reiny
+# Reiny
 
 Template engine for React
+
+WIP
+
+```
+npm install reiny --save
+```
+
+- gulp: [mizchi/gul-reiny](https://github.com/mizchi/gul-reiny "mizchi/gul-reiny")
+- browserify: [mizchi/reinify](https://github.com/mizchi/reinify "mizchi/reinify")
 
 ## Goal
 
 - Jade like template engine
-- Generate react
-- inline css
-- inline propTypes
+- Generate react element
+- Inline css
+- (WIP) Inline propTypes
 
 ## TODO
 
