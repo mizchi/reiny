@@ -4,6 +4,7 @@ beautify = require('js-beautify').js_beautify
 
 compile = require '../src/compiler'
 parse = require '../src/parser'
+preprocess = require '../src/preprocess'
 
 # Run
 {inspect} = require('util')
@@ -13,8 +14,8 @@ parse = require '../src/parser'
 #
 
 # source
-source = fs.readFileSync(path.join __dirname, 'for.reiny').toString()
-ast = parse(source)
+source = fs.readFileSync(path.join __dirname, 'embeded-code.reiny').toString()
+ast = parse preprocess source
 
 console.error(inspect ast, {depth: null});
 

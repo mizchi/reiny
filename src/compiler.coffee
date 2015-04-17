@@ -70,9 +70,12 @@ module.exports = compile = (node) ->
       childrenCode = 'function(){' + (children?.join(';') ? '') + ';}'
       "$('#{elementType}', #{propsStr}, #{childrenCode})"
 
-    when 'inlineCode'
+    when 'code'
       code = Babel.transform(node.value).code
       code.replace('\"use strict\";\n', '')
+
+    when 'embededCode'
+      node.value
 
     when 'free'
       node.value

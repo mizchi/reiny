@@ -8,7 +8,7 @@ start = program
 program = lines:line* { type: 'program', body: lines}
 
 line = SAMEDENT node:(
-  forStatement / ifStatement / element / comment / inlineCode / text
+  forStatement / ifStatement / element / comment / code / text
   ) EOL? {node}
 
 element = s:assignable props:props? styles:styles? children: _elementChildren?
@@ -17,8 +17,7 @@ element = s:assignable props:props? styles:styles? children: _elementChildren?
   }
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
-    //= toTheEndOfLine*/
-    / _* !'=' text:$((!EOL .)*) EOL {{type: 'inlineText', value: text}}
+    / _* !'=' _* text:toTheEndOfLine {{type: 'inlineText', value: text}}
     / _* '=' _* expr: expr {expr}
   assignable
     =
@@ -58,7 +57,11 @@ element = s:assignable props:props? styles:styles? children: _elementChildren?
       expr: expr
     }
 
-text = '|' + text:toTheEndOfLine {type: 'text', value: text}
+embededCode
+  = '{' code:$((!'}' .)*) '}' {type: 'embededCode', value: code}
+  / '{-' code:$((!'}' .)*) '-}' {type: 'embededCode', value: code}
+
+text = '|' _* text:toTheEndOfLine {type: 'text', value: text}
 
 toTheEndOfLine = text:$((!EOL .)+) EOL {text}
 
@@ -81,7 +84,8 @@ forStatement = 'for' _+ left:identifier _+ "in" _+ right:toTheEndOfLine children
 expr = value
 
 symbol = $([a-zA-Z] [a-zA-Z\d]*)
-value = boolean / number / string / identifier
+value = boolean / number / string / identifier / embededCode
+
 boolean = bool:bool {type: 'boolean', value: bool}
 bool = "true" / "false"
 identifier = symbol:symbol {type: 'identifier', value: symbol}
@@ -94,19 +98,18 @@ digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
 _ = [ \n\t\r]
 __ = _*
 
-comment = '//' value:$([a-zA-Z\d ]*)
+comment = '//' value:toTheEndOfLine
   {
     {type: 'comment', value}
   }
 
-//inlineCode = '-' value: $([a-zA-Z\d ]*)
-inlineCode = '-' value: $((!'\n' .)*)
+//code = '-' value: $([a-zA-Z\d ]*)
+code = '-' _+ value: $((!'\n' .)*)
   {
-    {type: 'inlineCode', value}
+    {type: 'code', value}
   }
 
 EOL = "\r\n" / "\n" / "\r"
-
 
 SAMEDENT
   = i:[ \t]* &{
