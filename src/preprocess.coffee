@@ -3,5 +3,6 @@ module.exports = (text) ->
     .split('\n')
     .filter (line) ->
       line.split( /\t|\s/ ).join('').length > 0
+
     .join('\n')
   code + '\n'

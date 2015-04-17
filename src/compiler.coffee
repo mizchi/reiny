@@ -10,12 +10,17 @@ buildProps = (node) ->
   obj = {}
 
 
+  classNames = []
+
   if node.props?
     obj.__mergeables = node.props.children.filter (p) -> p.type is 'mergeable-object'
 
     props = node.props.children.filter (p) -> p.type is 'property'
     for i in props
-      obj[i.key] = compile(i.expr)
+      if i.key is 'className'
+        classNames.push i.expr
+      else
+        obj[i.key] = compile(i.expr)
 
   # style
   if node.styles?
@@ -26,16 +31,16 @@ buildProps = (node) ->
 
   # classes and id
   if node.value?.modifiers?
-    classNames =
-      if obj.className then [obj.className] else []
     for m in node.value.modifiers
       switch m.type
-        when 'className' then classNames.push m.value
-        when 'id' then obj.id = m.value
+        when 'className' then classNames.push {type:'string', value: m.value}
+        when 'id'  then obj.id  = m.value
         when 'ref' then obj.key = m.value
-  # TODO: class name should accept identifier
   if classNames.length > 0
-    obj.className = '\'' + classNames.join(' ') + '\''
+    code = classNames
+      .map((e) -> compile(e))
+      .join(',')
+    obj.className = '[' + code + ']'
   obj
 
 expandObj = (obj) ->
