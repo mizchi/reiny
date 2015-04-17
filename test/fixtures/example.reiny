@@ -8,6 +8,11 @@ let foo = 'hogefuga'
 div(onClick = onClick) {
   backgroundColor = 'red'
 }
+  // foo
+  span(
+    key="--🐑--"
+  )
+
   // for syntax
   ul
     for i in items
