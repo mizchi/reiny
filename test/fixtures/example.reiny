@@ -1,8 +1,11 @@
-- let onClick = (e) => e.preventDefault();
-- let items = [1, 2, 3]
-- let foo = 'hogefuga'
+` let onClick = (e) => e.preventDefault();
 
-div{
+```
+let items = [1, 2, 3]
+let foo = 'hogefuga'
+```
+
+div(onClick = onClick){
   backgroundColor = 'red'
 }
   ul
@@ -10,11 +13,11 @@ div{
       li(key=i) = i
   if true
     a(key="fooo") hoge fuga aaa
+
   | aaaa bbbb
+
   ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
-  ` let p = {'data-c': 3, 'data-id': 4};
   foo(
     > o
-    > p
     onClick = {- function(){console.log('foo')} -}
   )
