@@ -33,8 +33,9 @@ buildProps = (node) ->
         when 'className' then classNames.push m.value
         when 'id' then obj.id = m.value
         when 'ref' then obj.key = m.value
+  # TODO: class name should accept identifier
   if classNames.length > 0
-    obj.className = classNames.join(' ')
+    obj.className = '\'' + classNames.join(' ') + '\''
   obj
 
 expandObj = (obj) ->

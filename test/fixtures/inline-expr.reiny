@@ -1,2 +1,5 @@
 span = { 'text' }
+span.span(
+  foo = { 'text3' }
+)
 span = {- function(){return 'text 2'} -}
