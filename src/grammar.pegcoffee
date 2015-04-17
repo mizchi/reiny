@@ -7,20 +7,19 @@
 start = program
 program = lines:line* { type: 'program', body: lines}
 
-line = SAMEDENT node:statement __ {node}
+line = SAMEDENT node:statement __blank {node}
 
 statement =
   forStatement / ifStatement / element / comment / code / multilineCode / text
 
-space =
-element = s:assignable props:props? ' '* styles:styles? ' '* children: _elementChildren?
+element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
   {
     {type: 'element', value: s, children, props, styles}
   }
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
-    / !EOL _* !'=' _* text:toTheEndOfLine {{type: 'inlineText', value: text}}
-    / !EOL _* '=' _* expr: expr {expr}
+    / !EOL _ !'=' _ text:toTheEndOfLine {{type: 'inlineText', value: text}}
+    / !EOL _ '=' _ expr: expr {expr}
   assignable
     =
       elementName: symbol modifiers:modifier*
@@ -41,25 +40,25 @@ element = s:assignable props:props? ' '* styles:styles? ' '* children: _elementC
   id = '#' id:symbol {type: 'id', value: id}
   ref = '&' ref:symbol {type: 'ref', value: ref}
 
-  props = "(" __ props:(p:property __ {p})* ")"
+  props = "(" __blank props:(p:property __blank {p})* ")"
     {
       type: 'props'
       children: props
     }
 
-  styles = "{" __ props:(p:property __ {p})* "}"
+  styles = "{" __blank props:(p:property __blank {p})* "}"
     {
       type: 'styles'
       children: props
     }
   property
-    = key:symbol __ '=' __ expr: expr
+    = key:symbol __blank '=' __blank expr: expr
       {
         type: 'property'
         key: key
         expr: expr
       }
-    / '>' ' '* key:dottableSymbol {
+    / '>' _ key:dottableSymbol {
       {
         type: 'mergeable-object'
         key: key
@@ -71,20 +70,20 @@ embededCode
   = '{-' code:$((!'-}' .)*) '-}' {type: 'embededCode', value: code}
   / '{' code:$((!'}' .)*) '}' {type: 'embededCode', value: code}
 
-text = '|' _* text:toTheEndOfLine {type: 'text', value: text}
+text = '|' _ text:toTheEndOfLine {type: 'text', value: text}
 
 toTheEndOfLine = text:$((!EOL .)+) EOL {text}
 
 block = children: ( INDENT c:line* DEDENT { c }) {children}
 
 // TODO: fix statement
-ifStatement = 'if' ' '+ condition:toTheEndOfLine children:block {
+ifStatement = 'if' __ condition:toTheEndOfLine children:block {
   type: 'if'
   condition: {type: 'free', value: condition}
   body: children
 }
 
-forStatement = 'for' ' '+ left:identifier ' '+ "in" ' '+ right:toTheEndOfLine children:block {
+forStatement = 'for' __ left:identifier __ "in" __ right:toTheEndOfLine children:block {
   type: 'for'
   left: left
   right: {type: 'free', value: right}
@@ -112,15 +111,17 @@ number = digits:digits {type: 'number', value: digits}
 digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
 
 space = ' '
-_ = [ \n\t\r]
-__ = _*
+_ = space*
+__ = space+
+
+__blank = $([ \n\t\r]*)
 
 comment = '//' value:toTheEndOfLine
   {
     {type: 'comment', value}
   }
 
-code = ('-' / '`') ' '* value:toTheEndOfLine
+code = ('-' / '`') _ value:toTheEndOfLine
   {
     {type: 'code', value}
   }
