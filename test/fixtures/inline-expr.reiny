@@ -1,0 +1,2 @@
+span = { 'text' }
+span = {- function(){return 'text 2'} -}

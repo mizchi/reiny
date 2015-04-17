@@ -78,10 +78,10 @@ module.exports = compile = (node) ->
       # if node.children.type is 'text'
       #   return "$('#{elementType}', #{propsStr}, #{compile node.children.value})"
 
-      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText']
+      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode']
         return "$('#{elementType}', #{propsStr}, #{compile node.children})"
 
-      children = node.children?.map (child) -> compile(child)
+      children = node.children.map (child) -> compile(child)
       childrenCode = 'function(){' + (children?.join(';') ? '') + ';}'
       "$('#{elementType}', #{propsStr}, #{childrenCode})"
 
@@ -116,6 +116,9 @@ module.exports = compile = (node) ->
         #{bodyCode};
       }
       """
+
+    when 'comment'
+      "/* #{node.value} */"
 
     when 'text'
       "$('span', {}, '#{node.value}')"
