@@ -58,8 +58,8 @@ element = s:assignable props:props? styles:styles? children: _elementChildren?
     }
 
 embededCode
-  = '{' code:$((!'}' .)*) '}' {type: 'embededCode', value: code}
-  / '{-' code:$((!'}' .)*) '-}' {type: 'embededCode', value: code}
+  = '{-' code:$((!'-}' .)*) '-}' {type: 'embededCode', value: code}
+  / '{' code:$((!'}' .)*) '}' {type: 'embededCode', value: code}
 
 text = '|' _* text:toTheEndOfLine {type: 'text', value: text}
 

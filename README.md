@@ -16,10 +16,12 @@ Everything doesn't work.
 - [x] Text Node
 - [x] IfStatement
 - [x] ForStatement
-- [ ] inline value
 - [x] Runtime
+- [x] Embeded Code
 - [ ] Agnostic inlineCode posteprocess
 - [ ] Arda mixin
+- [ ] inline value
+- [ ] value
 
 ## Example
 
