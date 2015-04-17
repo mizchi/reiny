@@ -8,9 +8,12 @@ let foo = 'hogefuga'
 div(onClick = onClick){
   backgroundColor = 'red'
 }
+  // for syntax
   ul
     for i in items
       li(key=i) = i
+
+  // if syntax
   if true
     a(key="fooo") hoge fuga aaa
 
