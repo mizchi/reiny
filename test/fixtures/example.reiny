@@ -5,7 +5,7 @@ let items = [1, 2, 3]
 let foo = 'hogefuga'
 ```
 
-div(onClick = onClick){
+div(onClick = onClick) {
   backgroundColor = 'red'
 }
   // for syntax
