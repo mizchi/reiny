@@ -1,6 +1,3 @@
-exports.xtend = require 'xtend'
-exports.runtime = require 'coppe'
-
 exports.parse = parse = (source) ->
   parse = require './parser'
   preprocess = require './preprocess'
@@ -13,7 +10,7 @@ exports.parse = parse = (source) ->
 wrapCodeWithExport = (code) ->
   """
   "use strict";
-  var reiny = require('reiny');
+  var reiny = require('reiny/runtime');
   var __runtime = reiny.runtime;
   var __extend = reiny.xtend;
   module.exports = #{code};
@@ -29,8 +26,3 @@ exports._compile = _compile = (ast, options = {}) ->
   compile = require './compiler'
   code = compile(ast, options = {})
   wrapCodeWithExport code
-
-exports.print = (source, options = {}) ->
-  beautify = require('js-beautify').js_beautify
-  code = compile source, options
-  console.log beautify(code, indent_size: 2)

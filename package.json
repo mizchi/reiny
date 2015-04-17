@@ -1,10 +1,10 @@
 {
   "name": "reiny",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "$(npm bin)/coffee -o lib -c src/*.coffee; cp src/grammar.pegcoffee lib/",
+    "prepublish": "$(npm bin)/coffee -o lib -c src/*.coffee; cp src/grammar.pegcoffee lib/;cp lib/runtime.js .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
