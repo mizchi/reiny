@@ -11,15 +11,21 @@ parse = require '../src/parser'
 # source = fs.readFileSync(path.join __dirname, 'indent.reiny').toString()
 # ast = parse(source)
 #
-# console.log(inspect ast, {depth: null});
 
 # source
 source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
 ast = parse(source)
 
-# console.log(inspect ast, {depth: null});
+console.error(inspect ast, {depth: null});
 
 code = compile(ast)
+
+console.error """
+global.React = require('react');
+var runtime = require('coppe');
+module.exports = #{beautify(code, indent_size: 2)}
+console.log(React.renderToStaticMarkup(module.exports()));
+"""
 
 console.log """
 global.React = require('react');

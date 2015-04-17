@@ -8,16 +8,18 @@ start = program
 program = lines:line* { type: 'program', body: lines}
 
 line = SAMEDENT node:(
-  forStatement / ifStatement / element / comment / inlineCode
+  forStatement / ifStatement / element / comment / inlineCode / text
   ) EOL? {node}
 
-element = s:assignable props:props? styles:styles? EOL? children: _elementChildren?
+element = s:assignable props:props? styles:styles? children: _elementChildren?
   {
     {type: 'element', value: s, children, props, styles}
   }
   _elementChildren
-    = __ '=' __ expr: expr {expr}
-    / INDENT c:line* DEDENT { c }
+    = EOL INDENT c:line* DEDENT { c }
+    //= toTheEndOfLine*/
+    / _* !'=' text:$((!EOL .)*) EOL {{type: 'inlineText', value: text}}
+    / _* '=' _* expr: expr {expr}
   assignable
     =
       elementName: symbol modifiers:modifier*
@@ -55,6 +57,10 @@ element = s:assignable props:props? styles:styles? EOL? children: _elementChildr
       key: key
       expr: expr
     }
+
+text = '|' + text:toTheEndOfLine {type: 'text', value: text}
+
+toTheEndOfLine = text:$((!EOL .)+) EOL {text}
 
 children = EOL? children: ( INDENT c:line* DEDENT { c }) {children}
 
@@ -100,6 +106,7 @@ inlineCode = '-' value: $((!'\n' .)*)
   }
 
 EOL = "\r\n" / "\n" / "\r"
+
 
 SAMEDENT
   = i:[ \t]* &{

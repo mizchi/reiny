@@ -11,4 +11,5 @@ div(
     for i in items
       li(key=i) = i
   if true
-    a(key=1)
+    a(key="fooo") hoge fuga aaa
+  | aaaa bbbb

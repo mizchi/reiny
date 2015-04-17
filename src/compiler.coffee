@@ -58,7 +58,10 @@ module.exports = compile = (node) ->
       unless node.children
         return "$('#{elementType}', #{propsStr})"
 
-      if node.children.type in ['identifier', 'boolean', 'number', 'string']
+      # if node.children.type is 'text'
+      #   return "$('#{elementType}', #{propsStr}, #{compile node.children.value})"
+
+      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText']
         return "$('#{elementType}', #{propsStr}, #{compile node.children})"
 
       children = node.children?.map (child) -> compile(child)
@@ -87,6 +90,13 @@ module.exports = compile = (node) ->
         #{bodyCode};
       }
       """
+
+    when 'text'
+      "$('span', {}, '#{node.value}')"
+
+    when 'inlineText'
+      "\'#{node.value}\'"
+
     when 'string'
       "\'#{node.value}\'"
     when 'number'
