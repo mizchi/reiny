@@ -1,6 +1,5 @@
 # postprocess
 Babel = require "babel-core"
-# CoffeeScript = require 'coffee-script'
 
 transformCode = (code) ->
   Babel.transform(code)

@@ -17,8 +17,8 @@ element = s:assignable props:props? styles:styles? children: _elementChildren?
   }
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
-    / _* !'=' _* text:toTheEndOfLine {{type: 'inlineText', value: text}}
-    / _* '=' _* expr: expr {expr}
+    / !EOL _* !'=' _* text:toTheEndOfLine {{type: 'inlineText', value: text}}
+    / !EOL _* '=' _* expr: expr {expr}
   assignable
     =
       elementName: symbol modifiers:modifier*
@@ -103,7 +103,7 @@ comment = '//' value:toTheEndOfLine
     {type: 'comment', value}
   }
 
-code = '-' _+ value: $((!'\n' .)*)
+code = ('-' / '`') _+ value: $((!'\n' .)*)
   {
     {type: 'code', value}
   }

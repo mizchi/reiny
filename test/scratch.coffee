@@ -8,13 +8,9 @@ preprocess = require '../src/preprocess'
 
 # Run
 {inspect} = require('util')
-# indent
-# source = fs.readFileSync(path.join __dirname, 'indent.reiny').toString()
-# ast = parse(source)
-#
 
 # source
-source = fs.readFileSync(path.join __dirname, 'code.reiny').toString()
+source = fs.readFileSync(path.join __dirname, 'source.reiny').toString()
 try
   ast = parse preprocess source
 catch e
