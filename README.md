@@ -26,34 +26,32 @@ Everything doesn't work.
 
 from
 
-```jade
-` let onClick = (e) => e.preventDefault();
+    ` let onClick = (e) => e.preventDefault();
 
-```
-let items = [1, 2, 3]
-let foo = 'hogefuga'
-```
+    ```
+    let items = [1, 2, 3]
+    let foo = 'hogefuga'
+    ```
 
-div(onClick = onClick){
-  backgroundColor = 'red'
-}
-  // for syntax
-  ul
-    for i in items
-      li(key=i) = i
+    div(onClick = onClick){
+      backgroundColor = 'red'
+    }
+      // for syntax
+      ul
+        for i in items
+          li(key=i) = i
 
-  // if syntax
-  if true
-    a(key="fooo") hoge fuga aaa
+      // if syntax
+      if true
+        a(key="fooo") hoge fuga aaa
 
-  | aaaa bbbb
+      | aaaa bbbb
 
-  ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
-  foo(
-    > o
-    onClick = {- function(){console.log('foo')} -}
-  )
-```
+      ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
+      foo(
+        > o
+        onClick = {- function(){console.log('foo')} -}
+      )
 
 to
 
