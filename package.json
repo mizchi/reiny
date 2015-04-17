@@ -1,8 +1,8 @@
 {
   "name": "reiny",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "prepublish": "$(npm bin)/coffee -o lib -c src/*.coffee; cp src/grammar.pegcoffee lib/",
     "test": "echo \"Error: no test specified\" && exit 1"
