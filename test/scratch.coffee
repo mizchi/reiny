@@ -14,8 +14,12 @@ preprocess = require '../src/preprocess'
 #
 
 # source
-source = fs.readFileSync(path.join __dirname, 'embeded-code.reiny').toString()
-ast = parse preprocess source
+source = fs.readFileSync(path.join __dirname, 'code.reiny').toString()
+try
+  ast = parse preprocess source
+catch e
+  console.error e
+  throw 'ast parse error'
 
 console.error(inspect ast, {depth: null});
 

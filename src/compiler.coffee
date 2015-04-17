@@ -1,6 +1,11 @@
 # postprocess
 Babel = require "babel-core"
-CoffeeScript = require 'coffee-script'
+# CoffeeScript = require 'coffee-script'
+
+transformCode = (code) ->
+  Babel.transform(code)
+    .code
+    .replace('\"use strict\";\n', '')
 
 buildProps = (node) ->
   obj = {}
@@ -71,18 +76,16 @@ module.exports = compile = (node) ->
       "$('#{elementType}', #{propsStr}, #{childrenCode})"
 
     when 'code'
-      code = Babel.transform(node.value).code
-      code.replace('\"use strict\";\n', '')
+      transformCode node.value
+
+    when 'multilineCode'
+      transformCode node.value
 
     when 'embededCode'
       node.value
 
     when 'free'
       node.value
-      # code = Babel.transform(node.value).code
-      # # code.replace('\"use strict\";\n', '')
-      # c = code.replace('\"use strict\";\n', '')
-      # c[0...(c.length - 1)]
 
     when 'if'
       children = node.body.map (child) -> compile(child)

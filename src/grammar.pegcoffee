@@ -8,7 +8,7 @@ start = program
 program = lines:line* { type: 'program', body: lines}
 
 line = SAMEDENT node:(
-  forStatement / ifStatement / element / comment / code / text
+  forStatement / ifStatement / element / comment / code / multilineCode / text
   ) EOL? {node}
 
 element = s:assignable props:props? styles:styles? children: _elementChildren?
@@ -103,10 +103,15 @@ comment = '//' value:toTheEndOfLine
     {type: 'comment', value}
   }
 
-//code = '-' value: $([a-zA-Z\d ]*)
 code = '-' _+ value: $((!'\n' .)*)
   {
     {type: 'code', value}
+  }
+
+_multilineCodeLeader = '```'
+multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _multilineCodeLeader
+  {
+    {type: 'multilineCode', value:code}
   }
 
 EOL = "\r\n" / "\n" / "\r"
