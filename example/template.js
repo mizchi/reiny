@@ -19,19 +19,15 @@ module.exports = function(__props) {
       style: {
         backgroundColor: 'red'
       }
-    }, function() { /*  CamelCase becomes reference */ ;
-    })
-    $('Foo', {}, function() { /*  unicode */ ;
-    })
-    $('span', {
-      key: '--🐑--'
-    }, function() { /*  ref with & */ ;
-    })
-    $('span', {
-      ref: 'foo'
-    }, function() { /*  for syntax */ ;
-    })
-    $('ul', {}, function() {
+    }, function() {
+      $('Foo', {});
+      $('span', {
+        key: '--🐑--'
+      });
+      $('span', {
+        ref: 'foo'
+      });
+      $('ul', {}, function() {
         for (var __i in __props.items) {
 
           var i = __props.items[__i];
@@ -39,29 +35,25 @@ module.exports = function(__props) {
             key: i
           }, i);;
         };
-      })
-      /*  if syntax */
-    if (false) {
-      $('a', {}, 'hoge fuga aaa')
-    }
-    /*  inline expression */
-    if (2 > 1) {
-      $('a', {
-        key: 'fooo'
-      }, 'hoge fuga aaa')
-    }
-    /*  text */
-    $('span', {}, 'aaaa bbbb')
-      /*  object mixin as property */
-
-    var o = {
-      'data-a': 'aaa',
-      'data-b': 'bbb'
-    };
-    $('foo', __extend({}, o, {
-      onClick: function() {
-        console.log('foo')
-      }
-    }))
+      });
+      if (false) {
+        $('a', {}, 'hoge fuga aaa')
+      };
+      if (2 > 1) {
+        $('a', {
+          key: 'fooo'
+        }, 'hoge fuga aaa')
+      };
+      $('span', {}, 'aaaa bbbb');
+      var o = {
+        'data-a': 'aaa',
+        'data-b': 'bbb'
+      };;
+      $('foo', __extend({}, o, {
+        onClick: function() {
+          console.log('foo')
+        }
+      }));
+    })
   });
 };

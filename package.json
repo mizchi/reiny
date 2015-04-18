@@ -1,6 +1,6 @@
 {
   "name": "reiny",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Template engine for React",
   "main": "runtime.js",
   "bin": {

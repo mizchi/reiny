@@ -98,15 +98,12 @@ console.log(React.renderToStaticMarkup(
 ```
 
 ```html
-<div class="template-root">
-    <div style="background-color:red;"></div>
-    <Foo></Foo><span></span><span></span>
-    <ul>
-        <li>1</li>
-        <li>100</li>
-    </ul>
-    <a>hoge fuga aaa</a><span>aaaa bbbb</span>
-    <foo data-a="aaa" data-b="bbb"></foo>
+<div style="background-color:red;">
+  <ul>
+    <li>1</li>
+
+    <li>100</li>
+  </ul><a>hoge fuga aaa</a><span>aaaa bbbb</span>
 </div>
 ```
 
