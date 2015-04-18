@@ -143,6 +143,8 @@ module.exports = compile = (node) ->
     when 'boolean'
       "#{node.value}"
     when 'identifier'
-      "(__props\.#{node.value}||#{node.value})"
+      node.value
+    when 'thisIdentifier'
+      "__props\.#{node.value}"
     else
       throw 'unknow node: ' + node.type

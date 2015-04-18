@@ -1,3 +1,6 @@
-for i in [1, 2, 3]
+for i in items
   - console.log(i)
   span=i
+
+for i in @items
+  li

@@ -22,11 +22,11 @@ div(onClick = onClick) {
 
   // for syntax
   ul
-    for i in items
+    for i in @items
       li(key=i) = i
 
   // if syntax
-  if true
+  if @foo
     a(key="fooo") hoge fuga aaa
 
   | aaaa bbbb

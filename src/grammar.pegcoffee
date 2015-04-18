@@ -16,16 +16,17 @@ statement =
 // Statements
 //////////////////
 
-ifStatement = 'if' __ condition:toTheEndOfLine children:block {
-  type: 'if'
-  condition: {type: 'free', value: condition}
-  body: children
-}
+ifStatement = 'if' __ condition:expr EOL children:block
+  {
+    type: 'if'
+    condition: condition
+    body: children
+  }
 
-forStatement = 'for' __ left:identifier __ "in" __ right:toTheEndOfLine children:block {
+forStatement = 'for' __ left:identifier __ "in" __ right:expr EOL children:block {
   type: 'for'
   left: left
-  right: {type: 'free', value: right}
+  right: right
   body: children
 }
 
@@ -105,12 +106,14 @@ multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _mul
 //////////////
 
 expr = value / embededCode
-value = boolean / number / string / memberAccessableIdentifier
+value = boolean / number / string / memberAccessableIdentifier / thisIdentifier
 boolean = bool:bool {type: 'boolean', value: bool}
 
 reserved = 'for' / 'in' / 'of' / 'if'
 identifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
-memberAccessableIdentifier = symbol:dottableSymbol {type: 'identifier', value: symbol}
+thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
+memberAccessableIdentifier = !reserved symbol:dottableSymbol {type: 'identifier', value: symbol}
+
 string
   = value:_string {type: 'string', value: value}
   /// "\"" value: symbol "\"" {type: 'string', value: value}*/
