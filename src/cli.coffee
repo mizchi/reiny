@@ -23,7 +23,7 @@ run = (target, argv) ->
   code = printBeautifiedCode(source, argv)
   # TODO: auto generate filename by extname
   if argv.out or argv.o
-    outputPath = path.join pocess.cwd(), argv.out
+    outputPath = path.join process.cwd(), argv.out
     fs.writeFileSync(outputPath, code)
     console.log 'write js'
   else
