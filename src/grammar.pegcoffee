@@ -7,7 +7,7 @@
 start = program
 program = lines:line* { type: 'program', body: lines}
 
-line = SAMEDENT node:statement __blank {node}
+line = SAMEDENT node:(!EOL s:statement {s}) EOL* {node}
 
 statement =
   forStatement / ifStatement / element / comment / code / multilineCode / textStatement
