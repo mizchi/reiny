@@ -16,6 +16,7 @@ printAst = (source, options = {}) ->
 
 [target] = argv._
 
+
 run = (target, argv) ->
   targetPath = path.join process.cwd(), target
   source = fs.readFileSync(targetPath).toString()
@@ -23,9 +24,9 @@ run = (target, argv) ->
   code = printBeautifiedCode(source, argv)
   # TODO: auto generate filename by extname
   if argv.out or argv.o
-    outputPath = path.join process.cwd(), argv.out
+    # console.log process.cwd(), argv.out ? argv.o
+    outputPath = path.join process.cwd(), (argv.out ? argv.o)
     fs.writeFileSync(outputPath, code)
-    console.log 'write js'
   else
     console.log code
 

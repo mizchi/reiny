@@ -1,0 +1,16 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "example.js",
+  "scripts": {
+    "build": "$(npm bin)/reiny template.reiny -o template.js",
+    "exec": "node runner.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mizchi",
+  "license": "MIT",
+  "devDependencies": {
+    "reiny": "file:.."
+  }
+}
