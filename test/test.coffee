@@ -24,10 +24,11 @@ for i in list
 
 print = (source, options = {}) ->
   beautify = require('js-beautify').js_beautify
-  code = compile source, options
+  code = reiny.compile source, options
   console.log beautify(code, indent_size: 2)
 
-source = fs.readFileSync(path.join __dirname, 'fixtures/example.reiny').toString()
+sourcePath = 'broken/identifier'
+source = fs.readFileSync(path.join __dirname, sourcePath+'.reiny').toString()
 print(source)
 # console.error inspect reiny.parse(source), depth: null
 # ast = reiny.parse(source)

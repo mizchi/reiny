@@ -10,7 +10,7 @@ program = lines:line* { type: 'program', body: lines}
 line = SAMEDENT node:statement __blank {node}
 
 statement =
-  forStatement / ifStatement / element / comment / code / multilineCode / text / expr
+  forStatement / ifStatement / element / comment / code / multilineCode / text
 
 //////////////////
 // Statements
@@ -41,10 +41,10 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     / !EOL _ '=' _ expr: expr {expr}
   assignable
     =
-      elementName: symbol modifiers:modifier*
+      elementName:identifier modifiers:modifier*
       {
         type: 'element'
-        elementType: elementName
+        elementType: elementName.value
         modifiers: modifiers
       }
     /
@@ -108,7 +108,8 @@ expr = value / embededCode
 value = boolean / number / string / memberAccessableIdentifier
 boolean = bool:bool {type: 'boolean', value: bool}
 
-identifier = symbol:symbol {type: 'identifier', value: symbol}
+reserved = 'for' / 'in' / 'of' / 'if'
+identifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
 memberAccessableIdentifier = symbol:dottableSymbol {type: 'identifier', value: symbol}
 string
   = value:_string {type: 'string', value: value}
