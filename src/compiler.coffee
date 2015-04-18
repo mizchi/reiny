@@ -33,9 +33,9 @@ buildProps = (node) ->
     for m in node.value.modifiers
       switch m.type
         when 'className' then classNames.push {type:'string', value: m.value}
-        when 'id'  then obj.id  = m.value
-        when 'ref' then obj.ref = m.value
-        when 'key' then obj.key = m.value
+        when 'id'  then obj.id  = '\'' + m.value + '\''
+        when 'ref' then obj.ref = '\'' + m.value + '\''
+        when 'key' then obj.key = '\'' + m.value + '\''
   if classNames.length > 0
     code = classNames
       .map((e) -> compile(e))
