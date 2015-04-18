@@ -10,7 +10,7 @@ program = lines:line* { type: 'program', body: lines}
 line = SAMEDENT node:statement __blank {node}
 
 statement =
-  forStatement / ifStatement / element / comment / code / multilineCode / text
+  forStatement / ifStatement / element / comment / code / multilineCode / textStatement
 
 //////////////////
 // Statements
@@ -24,7 +24,7 @@ ifStatement = 'if' __ condition:expr EOL children:block
   }
 
 forStatement =
-  'for' __ left:identifier second:(_ ',' _ e:identifier {e})?
+  'for' __ left:singleIdentifier second:(_ ',' _ i:singleIdentifier {i})?
   __ forType:('in'/'of')
   __ right:expr EOL children:block
   {
@@ -35,7 +35,7 @@ forStatement =
     body: children
   }
 
-text = '|' _ text:toTheEndOfLine {type: 'text', value: text}
+textStatement = '|' _ text:toTheEndOfLine {type: 'text', value: text}
 
 element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
   {
@@ -47,7 +47,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     / !EOL _ '=' _ expr: expr {expr}
   assignable
     =
-      elementName:identifier modifiers:modifier*
+      elementName:singleIdentifier modifiers:modifier*
       {
         type: 'element'
         elementType: elementName.value
@@ -110,24 +110,23 @@ multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _mul
 // Expressions
 //////////////
 
-expr = value / embededCode
+expr = value / embededExpr
 value = boolean / number / string / memberAccessableIdentifier / thisIdentifier
 boolean = bool:bool {type: 'boolean', value: bool}
 
 reserved = 'for' / 'in' / 'of' / 'if'
-identifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
+
+identifier = thisIdentifier / memberAccessableIdentifier / singleIdentifier
+
+singleIdentifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
 thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
 memberAccessableIdentifier = !reserved symbol:dottableSymbol {type: 'identifier', value: symbol}
 
-string
-  = value:_string {type: 'string', value: value}
-  /// "\"" value: symbol "\"" {type: 'string', value: value}*/
-  /// "\'" value: symbol "\'" {type: 'string', value: value}*/
-
+string = value:_string {type: 'string', value: value}
 number = digits:digits {type: 'number', value: digits}
-embededCode
-  = '{-' code:$((!'-}' .)*) '-}' {type: 'embededCode', value: code}
-  / '{' code:$((!'}' .)*) '}' {type: 'embededCode', value: code}
+embededExpr
+  = '{-' code:$((!'-}' .)*) '-}' {type: 'embededExpr', value: code}
+  / '{' code:$((!'}' .)*) '}' {type: 'embededExpr', value: code}
 
 // Syntax
 
@@ -172,33 +171,12 @@ hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)
 digits = n:$( ('+'/'-')? [1-9] [0-9]*) { parseInt(n, 10)}
 bool = "true" / "false"
 
-Numbers
-  = "0b" bs:$(bit+) { rp new CS.Int parseInt bs, 2 }
-  / "0o" os:$(octalDigit+) { rp new CS.Int parseInt os, 8 }
-  / "0x" hs:$(hexDigit+) { rp new CS.Int parseInt hs, 16 }
-  / base:decimal e:[eE] sign:[+-]? exponent:decimal {
-      rp new CS.Float parseFloat "#{base.data}#{e}#{sign ? ''}#{exponent.data}"
-    }
-  / decimal
-
-decimal
-  // trailing and leading radix points are discouraged anyway
-  = integral:integer fractional:$("." decimalDigit+)? {
-      if fractional
-        rp new CS.Float parseFloat integral + fractional
-      else
-        rp new CS.Int +integral
-    }
-
-integer
-  = "0"
-  / $([1-9] decimalDigit*)
+// primitive
 
 decimalDigit = [0-9]
 hexDigit = [0-9a-fA-F]
 octalDigit = [0-7]
 bit = [01]
-
 
 _string
   = $("\"\"\"" d:(stringData / "'" / $("\"" "\""? !"\""))+ "\"\"\"")
@@ -227,3 +205,19 @@ UnicodeDigit = [\u0030-\u0039\u0660-\u0669\u06F0-\u06F9\u07C0-\u07C9\u0966-\u096
 UnicodeConnectorPunctuation = [\u005F\u203F\u2040\u2054\uFE33\uFE34\uFE4D-\uFE4F\uFF3F]
 ZWNJ = "\u200C"
 ZWJ = "\u200D"
+
+// number
+Numbers
+  = "0b" bs:$(bit+)
+  / "0o" os:$(octalDigit+)
+  / "0x" hs:$(hexDigit+)
+  / base:decimal e:[eE] sign:[+-]? exponent:decimal
+  / decimal
+
+decimal
+  // trailing and leading radix points are discouraged anyway
+  = integral:integer fractional:$("." decimalDigit+)?
+
+integer
+  = "0"
+  / $([1-9] decimalDigit*)

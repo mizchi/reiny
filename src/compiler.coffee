@@ -101,7 +101,7 @@ module.exports = compile = (node) ->
     when 'multilineCode'
       transformCode node.value
 
-    when 'embededCode'
+    when 'embededExpr'
       node.value
 
     when 'free'

@@ -2,7 +2,7 @@
   "name": "reiny",
   "version": "0.1.5",
   "description": "",
-  "main": "lib/index.js",
+  "main": "runtime.js",
   "scripts": {
     "prepublish": "$(npm bin)/coffee -o lib -c src/*.coffee; cp src/grammar.pegcoffee lib/;browserify lib/runtime.js -o runtime.js -s reiny",
     "test": "echo \"Error: no test specified\" && exit 1"
