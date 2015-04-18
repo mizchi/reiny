@@ -116,12 +116,25 @@ module.exports = compile = (node) ->
       if(#{condCode}) { #{childrenCode} }
       """
 
-    when 'for'
+    when 'forIn'
       bodyCode = node.body
         .map((c) -> compile(c) + ';')
         .join('')
       """
       for(var __i in #{compile node.right}) {
+        #{if node.second? then "var #{node.second.value} = __i;" else ""}
+        var #{node.left.value} = #{compile node.right}[__i];
+        #{bodyCode};
+      }
+      """
+
+    when 'forOf'
+      bodyCode = node.body
+        .map((c) -> compile(c) + ';')
+        .join('')
+      """
+      for(var __i in #{compile node.right}) {
+        #{if node.second? then "var #{node.second.value} = __i;" else ""}
         var #{node.left.value} = #{compile node.right}[__i];
         #{bodyCode};
       }

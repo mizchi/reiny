@@ -29,9 +29,9 @@ print = (source, options = {}) ->
 
 # sourcePath = 'broken/identifier'
 # sourcePath = 'fixtures/example.reiny'
-sourcePath = 'fixtures/example'
+sourcePath = 'fixtures/for'
 source = fs.readFileSync(path.join __dirname, sourcePath+'.reiny').toString()
-# print(source)
-console.error inspect reiny.parse(source), depth: null
-ast = reiny.parse(source)
-console.log reiny._compile(ast)
+print(source)
+# console.error inspect reiny.parse(source), depth: null
+# ast = reiny.parse(source)
+# console.log reiny._compile(ast)

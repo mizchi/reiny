@@ -23,12 +23,17 @@ ifStatement = 'if' __ condition:expr EOL children:block
     body: children
   }
 
-forStatement = 'for' __ left:identifier __ "in" __ right:expr EOL children:block {
-  type: 'for'
-  left: left
-  right: right
-  body: children
-}
+forStatement =
+  'for' __ left:identifier second:(_ ',' _ e:identifier {e})?
+  __ forType:('in'/'of')
+  __ right:expr EOL children:block
+  {
+    type: if forType is 'in' then 'forIn' else 'forOf'
+    left: left
+    second: second
+    right: right
+    body: children
+  }
 
 text = '|' _ text:toTheEndOfLine {type: 'text', value: text}
 

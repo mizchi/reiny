@@ -2,5 +2,5 @@ for i in items
   - console.log(i)
   span=i
 
-for i in @items
+for i, n in @items
   li
