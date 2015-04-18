@@ -19,17 +19,7 @@ npm install reiny --save
 
 ## Example
 
-Runner
-
-```js
-global.React = require('react');
-var template = require('./template'); // compiled source
-console.log(React.renderToStaticMarkup(
-  template({items: [1, 100]}
-)));
-```
-
-from
+template.reiny
 
 <pre>
 ```
@@ -78,7 +68,28 @@ div() {
   )
 </pre>
 
+
 ```
+npm install -g reiny
+reiny template.reiny -o template.js
+```
+
+or node module
+
+```js
+var reiny = require('reiny/lib');
+reiny.compile('foo.bar(prop=1) text');
+```
+
+## How to Use
+
+Use template with runner
+
+```
+npm install reiny --save-dev
+```
+
+```js
 global.React = require('react');
 var template = require('./template'); // compiled source
 console.log(React.renderToStaticMarkup(
@@ -86,8 +97,17 @@ console.log(React.renderToStaticMarkup(
 )));
 ```
 
-```
-<div class="template-root"><div style="background-color:red;"></div><Foo></Foo><span></span><span></span><ul><li>1</li><li>100</li></ul><a>hoge fuga aaa</a><span>aaaa bbbb</span><foo data-a="aaa" data-b="bbb"></foo></div>
+```html
+<div class="template-root">
+    <div style="background-color:red;"></div>
+    <Foo></Foo><span></span><span></span>
+    <ul>
+        <li>1</li>
+        <li>100</li>
+    </ul>
+    <a>hoge fuga aaa</a><span>aaaa bbbb</span>
+    <foo data-a="aaa" data-b="bbb"></foo>
+</div>
 ```
 
 ## TODO
