@@ -61,9 +61,10 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
         modifiers: modifiers
       }
   modifier = className / id / ref
-  className = '.' className:symbol {type: 'className', value:className}
-  id = '#' id:symbol {type: 'id', value: id}
-  ref = '&' ref:symbol {type: 'ref', value: ref}
+  className = '.' className:hyphenizableSymbol {type: 'className', value:className}
+  id = '#' id:hyphenizableSymbol {type: 'id', value: id}
+  ref = '&' ref:hyphenizableSymbol {type: 'ref', value: ref}
+  key = ':' ref:hyphenizableSymbol {type: 'key', value: ref}
 
   props = "(" __blank props:(p:property __blank {p})* ")"
     {

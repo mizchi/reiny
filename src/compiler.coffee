@@ -34,12 +34,13 @@ buildProps = (node) ->
       switch m.type
         when 'className' then classNames.push {type:'string', value: m.value}
         when 'id'  then obj.id  = m.value
-        when 'ref' then obj.key = m.value
+        when 'ref' then obj.ref = m.value
+        when 'key' then obj.key = m.value
   if classNames.length > 0
     code = classNames
       .map((e) -> compile(e))
       .join(',')
-    obj.className = '[' + code + ']'
+    obj.className = '[' + code + '].join("")'
   obj
 
 expandObj = (obj) ->
@@ -84,9 +85,6 @@ module.exports = compile = (node) ->
 
       unless node.children
         return "$('#{elementType}', #{propsStr})"
-
-      # if node.children.type is 'text'
-      #   return "$('#{elementType}', #{propsStr}, #{compile node.children.value})"
 
       if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode']
         return "$('#{elementType}', #{propsStr}, #{compile node.children})"
