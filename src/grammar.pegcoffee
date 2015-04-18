@@ -123,7 +123,12 @@ singleIdentifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
 thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
 memberAccessableIdentifier = !reserved symbol:dottableSymbol {type: 'identifier', value: symbol}
 
-string = value:_string {type: 'string', value: value}
+string = value:_string
+  {
+    # console.log '-- string value',
+    v = value.replace(/'/g, '').replace(/"/g, '')
+    type: 'string', value: v
+  }
 number = digits:digits {type: 'number', value: digits}
 embededExpr
   = '{-' code:$((!'-}' .)*) '-}' {type: 'embededExpr', value: code}
@@ -179,6 +184,7 @@ hexDigit = [0-9a-fA-F]
 octalDigit = [0-7]
 bit = [01]
 
+chars = UnicodeLetter+
 _string
   = $("\"\"\"" d:(stringData / "'" / $("\"" "\""? !"\""))+ "\"\"\"")
   / $("'''" d:(stringData / "\"" / "#" / $("'" "'"? !"'"))+ "'''")

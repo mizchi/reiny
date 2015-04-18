@@ -28,8 +28,8 @@ print = (source, options = {}) ->
   console.log beautify(code, indent_size: 2)
 
 # sourcePath = 'broken/identifier'
-# sourcePath = 'fixtures/example.reiny'
-sourcePath = 'fixtures/modifiers'
+sourcePath = 'fixtures/example'
+# sourcePath = 'fixtures/modifiers'
 source = fs.readFileSync(path.join __dirname, sourcePath+'.reiny').toString()
 print(source)
 # console.error inspect reiny.parse(source), depth: null
