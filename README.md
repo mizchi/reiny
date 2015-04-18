@@ -15,7 +15,8 @@ npm install reiny --save
 
 - Jade like template engine
 - Generate react element
-- Inline css
+- Inline css friendly
+- Inline babel preprocessor
 - (WIP) Inline propTypes
 
 ## TODO
@@ -23,18 +24,18 @@ npm install reiny --save
 - [x] Indent block
 - [x] Text Node
 - [x] IfStatement
-- [x] ForStatement
+- [x] ForInStatement
+- [x] ForOfStatement
 - [x] Runtime
-- [x] Embeded Code
+- [x] Embeded expression
 - [x] Unicode
-- [x] Inline value
 - [x] Vriable as element type
-- [ ] Inject shared helper
-- [ ] gulp plugin
-- [ ] browserify plugin
-- [ ] Agnostic inlineCode posteprocess
+- [x] gulp plugin
+- [x] browserify plugin
+- [ ] Agnostic inlineCode postprocessor (Coffee/Babel/TypeScriptSimple)
 - [ ] CLI interface
 - [ ] Type Parameters statement for React propTypes
+- [ ] Inject shared helper
 
 ## Example
 

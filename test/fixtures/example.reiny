@@ -1,4 +1,3 @@
-` let onClick = (e) => e.preventDefault();
 ` let items = [1, 2, 3];
 
 ```
@@ -12,7 +11,7 @@ let Foo = React.createClass({
 div(onClick = onClick) {
   backgroundColor = 'red'
 }
-  // foo
+  // CamelCase becomes reference
   Foo()
 
   // unicode
@@ -26,7 +25,11 @@ div(onClick = onClick) {
       li(key=i) = i
 
   // if syntax
-  if @foo
+  if false
+    a(key="fooo") hoge fuga aaa
+
+  // inline expression
+  if { 2 > 1 }
     a(key="fooo") hoge fuga aaa
 
   | aaaa bbbb
