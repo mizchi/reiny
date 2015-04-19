@@ -3,7 +3,7 @@
 primitive = boolean / number / string
 
 boolean = v:_boolean {type: 'boolean', value: v}
-number = v:$(_number) {type: 'number', value: digits}
+number = v:$(_number) {type: 'number', value: v}
 string = value:_string
   {
     v = value.replace(/'/g, '').replace(/"/g, '')

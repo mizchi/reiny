@@ -43,13 +43,14 @@ buildProps = (node) ->
     obj.className = '[' + code + '].join("")'
   obj
 
+_wrapStr = (s) -> '\'' + s + '\''
 expandObj = (obj) ->
   kv =
     for k, v of obj when k not in ['__mergeables']
       if v instanceof Object
-        k + ': ' + expandObj(v)
+        _wrapStr(k) + ': ' + expandObj(v)
       else
-        k + ':' + v
+        _wrapStr(k) + ':' + v
   ret = '{' + kv.join(',') + '}'
   if obj.__mergeables?.length
     objs = obj.__mergeables

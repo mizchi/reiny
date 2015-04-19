@@ -1,0 +1,6 @@
+.container {
+  background-color: #eee
+  width: 640
+  height: 480px
+}
+  h1 hello

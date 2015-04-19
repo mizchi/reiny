@@ -8,9 +8,13 @@ let Foo = React.createClass({
 })
 ---
 
-div(onClick = onClick) {
-  backgroundColor = 'red'
+.container {
+  background-color: #eee
+  width: 640
+  height: 480px
 }
+  h1 This is an reiny example
+
   // CamelCase becomes reference
   Foo()
 
