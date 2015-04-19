@@ -40,11 +40,19 @@ for i in list
     console.error e
     throw i + ' parse failed'
 
-# console.log 'args',
 if target = process.argv[3] ? process.argv[2]
   console.error 'exec', target
   source = fs.readFileSync(path.join process.cwd(), target).toString()
 
   ast = reiny.parse(source)
   console.error inspect ast, depth: null # show ast
-  console.log reiny._compile(ast) # show code
+  code = reiny._compile(ast) # show code
+  console.log code # show code
+
+  # exec
+  global.React = require('react')
+  eval(code
+    .replace("module.exports", "global.__tmp")
+    .replace("require('reiny/runtime')", "require('../runtime')")
+  )
+  console.error React.renderToStaticMarkup __tmp()
