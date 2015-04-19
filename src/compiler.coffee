@@ -42,7 +42,7 @@ buildProps = (node) ->
     code = classNames
       .map((e) -> compile(e))
       .join(',')
-    obj.className = '[' + code + '].join("")'
+    obj.className = '[' + code + '].join(" ")'
   obj
 
 _wrapStr = (s) -> '\'' + s + '\''
