@@ -4,9 +4,21 @@ path = require 'path'
 fs = require 'fs'
 
 # Run
-grammar = fs.readFileSync(path.join __dirname, 'grammar.pegcoffee').toString()
+grammarFiles = [
+  'grammars/_entry.pegcoffee'
+  'grammars/statement.pegcoffee'
+  'grammars/expression.pegcoffee'
+  'grammars/primitive.pegcoffee'
+]
+
+getGrammarSource = ->
+  grammarFiles
+    .map (fname) ->
+      fs.readFileSync(path.join __dirname, fname).toString()
+    .join('\n')
+
+grammar = getGrammarSource()
 parser = PEG.buildParser grammar, plugins: [coffee]
-util = require 'util'
 
 module.exports = parse = (src) ->
   parser.parse src

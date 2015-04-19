@@ -1,0 +1,96 @@
+//////////////////
+// Statements
+//////////////////
+statement =
+  forStatement / ifStatement / element / comment / code / multilineCode / textStatement
+
+ifStatement = 'if' __ condition:expr EOL children:block
+  {
+    type: 'if'
+    condition: condition
+    body: children
+  }
+
+forStatement =
+  'for' __ left:singleIdentifier second:(_ ',' _ i:singleIdentifier {i})?
+  __ forType:('in'/'of')
+  __ right:expr EOL children:block
+  {
+    type: if forType is 'in' then 'forIn' else 'forOf'
+    left: left
+    second: second
+    right: right
+    body: children
+  }
+
+textStatement = '|' _ text:toTheEndOfLine {type: 'text', value: text}
+
+element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
+  {
+    {type: 'element', value: s, children, props, styles}
+  }
+  _elementChildren
+    = EOL INDENT c:line* DEDENT { c }
+    / !EOL _ !'=' _ text:toTheEndOfLine {{type: 'inlineText', value: text}}
+    / !EOL _ '=' _ expr: expr {expr}
+  assignable
+    =
+      elementName:singleIdentifier modifiers:modifier*
+      {
+        type: 'element'
+        elementType: elementName.value
+        modifiers: modifiers
+      }
+    /
+      modifiers:modifier+
+      {
+        type: 'element'
+        elementType: 'div'
+        modifiers: modifiers
+      }
+  modifier = className / id / ref
+  className = '.' className:hyphenizableSymbol {type: 'className', value:className}
+  id = '#' id:hyphenizableSymbol {type: 'id', value: id}
+  ref = '&' ref:hyphenizableSymbol {type: 'ref', value: ref}
+  key = ':' ref:hyphenizableSymbol {type: 'key', value: ref}
+
+  props = "(" __blank props:(p:property __blank {p})* ")"
+    {
+      type: 'props'
+      children: props
+    }
+
+  styles = "{" __blank props:(p:property __blank {p})* "}"
+    {
+      type: 'styles'
+      children: props
+    }
+  property
+    = key:symbol __blank '=' __blank expr: expr
+      {
+        type: 'property'
+        key: key
+        expr: expr
+      }
+    / '>' _ key:dottableSymbol {
+      {
+        type: 'mergeable-object'
+        key: key
+      }
+    }
+
+comment = '//' value:toTheEndOfLine
+  {
+    {type: 'comment', value}
+  }
+
+code = ('-' / '`') space+ value:toTheEndOfLine
+  {
+    {type: 'code', value}
+  }
+
+_multilineCodeLeader = '```'
+multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _multilineCodeLeader
+  {
+    {type: 'multilineCode', value:code}
+  }

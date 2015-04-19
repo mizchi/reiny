@@ -1,0 +1,22 @@
+//////////////
+// Expressions
+//////////////
+
+expr = primitive / embededExpr / identifier
+reserved = 'for' / 'in' / 'of' / 'if'
+identifier = thisIdentifier / memberAccessableIdentifier / singleIdentifier
+singleIdentifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
+thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
+memberAccessableIdentifier = !reserved symbol:dottableSymbol {type: 'identifier', value: symbol}
+
+embededExpr
+  = '{-' code:$((!'-}' .)*) '-}' {type: 'embededExpr', value: code}
+  / '{' code:$((!'}' .)*) '}' {type: 'embededExpr', value: code}
+
+// Token
+toTheEndOfLine = text:$((!EOL .)+) EOL {text}
+block = children: ( INDENT c:line* DEDENT { c }) {children}
+
+symbol = $([a-zA-Z_] [a-zA-Z\d_]*)
+dottableSymbol = $(symbol ('.' symbol)*)
+hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)

@@ -1,0 +1,38 @@
+// Indent Style Syntax
+{
+  global.ctx = {}
+  ctx.indentStack = []
+  ctx.indent = ""
+}
+
+start = program
+program = lines:line* { type: 'program', body: lines}
+line = SAMEDENT node:(!EOL s:statement {s}) EOL* {node}
+EOL = "\r\n" / "\n" / "\r"
+
+SAMEDENT
+  = i:[ \t]* &{
+    i.join('') is ctx.indent
+  }
+
+INDENT
+  = &(
+      i:[ \t]+ &{
+        i.length > ctx.indent.length
+      }
+      {
+        ctx.indentStack.push(ctx.indent)
+        ctx.indent = i.join("")
+      }
+    )
+
+DEDENT
+  = {
+    ctx.indent = ctx.indentStack.pop()
+  }
+
+// Utils
+space = ' '
+_ = space*
+__ = space+
+__blank = $([ \n\t\r]*)
