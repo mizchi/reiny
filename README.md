@@ -21,14 +21,14 @@ npm install reiny --save
 
 template.reiny
 
-<pre>
 ```
+---
 let Foo = React.createClass({
   render: () => {
     return React.createElement('div', {className: 'foo'});
   }
 })
-```
+---
 
 div() {
   backgroundColor = 'red'
@@ -61,13 +61,12 @@ div() {
   | aaaa bbbb
 
   // object mixin as property
-  ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
+  - let o = {'data-a': 'aaa', 'data-b': 'bbb'};
   foo(
     > o
     onClick = {- function(){console.log('foo')} -}
   )
-</pre>
-
+```
 
 ```
 npm install -g reiny
