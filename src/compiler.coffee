@@ -114,6 +114,10 @@ module.exports = compile = (node) ->
         result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
 
       result
+
+    when 'directElement'
+      "$.direct(#{node.value})"
+
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props

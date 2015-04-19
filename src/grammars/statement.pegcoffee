@@ -5,6 +5,7 @@ statement
   = forStatement
   / ifStatement
   / element
+  / directElement
   / code
   / multilineCode
   / textStatement
@@ -30,6 +31,11 @@ forStatement =
   }
 
 textStatement = '|' _ text:toTheEndOfLine {type: 'text', value: text}
+
+directElement = '+(' _ symbol:dottableSymbol _ ')'
+  {
+    type: 'directElement', value: symbol
+  }
 
 element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
   {

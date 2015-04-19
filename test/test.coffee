@@ -10,6 +10,7 @@ list = [
   'code'
   'comment'
   'custom-element'
+  'direct-element'
   'embeded-code'
   'example'
   'for'
@@ -42,12 +43,6 @@ for i in list
 
 if target = process.argv[3] ? process.argv[2]
   console.error 'exec', target
-  source = fs.readFileSync(path.join process.cwd(), target).toString()
-
-  ast = reiny.parse(source)
-  console.error inspect ast, depth: null # show ast
-  code = reiny._compile(ast) # show code
-  console.log code # show code
 
   # exec
   execTemp = ->
@@ -60,4 +55,10 @@ if target = process.argv[3] ? process.argv[2]
       propTypes: __tmp.propTypes ? {}
       render: -> __tmp()
     console.error React.renderToStaticMarkup React.createElement(c, {})
-  execTemp()
+
+  source = fs.readFileSync(path.join process.cwd(), target).toString()
+  ast = reiny.parse(source)
+  console.error inspect ast, depth: null # show ast
+  code = reiny._compile(ast) # show code
+  console.log code # show code
+  # execTemp()
