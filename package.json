@@ -1,13 +1,13 @@
 {
   "name": "reiny",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Template engine for React",
   "main": "runtime.js",
   "bin": {
     "reiny": "cli"
   },
   "scripts": {
-    "prepublish": "$(npm bin)/coffee -o lib -c src/*.coffee; cp src/grammar.pegcoffee lib/;browserify lib/runtime.js -o runtime.js -s reiny",
+    "prepublish": "./script/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mizchi",
@@ -15,15 +15,15 @@
   "dependencies": {
     "babel-core": "^5.1.7",
     "coppe": "^0.1.2",
-    "js-beautify": "^1.5.5",
     "minimist": "^1.1.1",
-    "mkdirp": "^0.5.0",
-    "pegjs": "^0.8.0",
-    "pegjs-coffee-plugin": "^0.2.2",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
+    "mkdirp": "^0.5.0",
+    "js-beautify": "^1.5.5",
+    "pegjs": "^0.8.0",
+    "pegjs-coffee-plugin": "^0.2.2",
     "coffee-script": "^1.9.1",
     "espower-coffee": "^0.10.0",
     "pegjs": "^0.8.0",

@@ -1,0 +1,29 @@
+#!/usr/bin/env coffee
+
+PEG = require 'pegjs'
+coffee = require 'pegjs-coffee-plugin'
+path = require 'path'
+fs = require 'fs'
+
+# Run
+grammarFiles = [
+  '../src/grammars/_entry.pegcoffee'
+  '../src/grammars/statement.pegcoffee'
+  '../src/grammars/expression.pegcoffee'
+  '../src/grammars/primitive.pegcoffee'
+]
+
+getGrammarSource = ->
+  grammarFiles
+    .map (fname) ->
+      fs.readFileSync(path.join __dirname, fname).toString()
+    .join('\n')
+
+grammar = getGrammarSource()
+try
+  parser = PEG.buildParser grammar, plugins: [coffee]
+  result = 'module.exports = ' + parser.parse.toString()
+  fs.writeFileSync((path.join __dirname, '../parser.js'), result)
+  console.log 'write done'
+catch e
+  throw e

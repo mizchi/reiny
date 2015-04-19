@@ -1,5 +1,5 @@
 exports.parse = parse = (source) ->
-  parse = require './parser'
+  parse = require '../parser'
   preprocess = require './preprocess'
   try
     return parse preprocess source

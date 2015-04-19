@@ -107,24 +107,11 @@ console.log(React.renderToStaticMarkup(
 </div>
 ```
 
-## TODO
+## How to develop
 
-- [x] Indent block
-- [x] Text Node
-- [x] IfStatement
-- [x] ForInStatement
-- [x] ForOfStatement
-- [x] Runtime
-- [x] Embeded expression
-- [x] Unicode
-- [x] Vriable as element type
-- [x] gulp plugin
-- [x] browserify plugin
-- [x] CLI interface
-- [ ] Register
-- [ ] Agnostic inlineCode preprocessor (Coffee/Babel/TypeScriptSimple)
-- [ ] Type Parameters statement for React propTypes
-- [ ] Inject shared helper
+```
+./script/build
+```
 
 ## LICENSE
 
