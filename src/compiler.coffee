@@ -126,7 +126,7 @@ module.exports = compile = (node) ->
       unless node.children
         return "$(#{elementCode}, #{propsStr})"
 
-      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode']
+      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode', 'thisIdentifier']
         return "$(#{elementCode}, #{propsStr}, #{compile node.children})"
 
       children = node.children.map (child) -> compile(child)
