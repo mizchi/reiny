@@ -61,7 +61,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     }
 
   property
-    = key:hyphenizableSymbol __blank '=' __blank expr: expr
+    = key:hyphenizableSymbol _ '=' _ expr: expr
       {
         type: 'property'
         key: key
@@ -81,7 +81,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     }
 
   _styleProperty
-    = key:hyphenizableSymbol __blank ('='/':') __blank expr:_styleExpr
+    = key:hyphenizableSymbol _ ('='/':') _ expr:_styleExpr _ ';'?
       {
         type: 'property'
         key: key
@@ -108,6 +108,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     {type: 'string', value: v}
 
   _colorInlineValue = $([0-9a-f]+) / $(integer '%')
+  // TODO color code
 
 comment = '//' value:toTheEndOfLine
   {
