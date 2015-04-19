@@ -1,0 +1,9 @@
+---
+let Foo = React.createClass({
+  render: () => {
+    return React.createElement('div', {className: 'foo'});
+  }
+})
+---
+// CamelCase becomes element reference
+Foo()

@@ -80,21 +80,21 @@ module.exports = compile = (node) ->
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props
-      elementType =
+      elementCode =
         if isUpperCase(node.value.elementType[0])
           compile(type:'identifier', value:node.value.elementType)
         else
-          node.value.elementType
+          compile(type:'string', value:node.value.elementType)
 
       unless node.children
-        return "$('#{elementType}', #{propsStr})"
+        return "$(#{elementCode}, #{propsStr})"
 
       if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode']
-        return "$('#{elementType}', #{propsStr}, #{compile node.children})"
+        return "$(#{elementCode}, #{propsStr}, #{compile node.children})"
 
       children = node.children.map (child) -> compile(child)
       childrenCode = 'function(){' + (children?.join(';') ? '') + ';}'
-      "$('#{elementType}', #{propsStr}, #{childrenCode})"
+      "$(#{elementCode}, #{propsStr}, #{childrenCode})"
 
     when 'code'
       transformCode node.value
