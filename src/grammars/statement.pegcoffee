@@ -1,8 +1,13 @@
 //////////////////
 // Statements
 //////////////////
-statement =
-  forStatement / ifStatement / element / comment / code / multilineCode / textStatement
+statement
+  = forStatement
+  / ifStatement
+  / element
+  / code
+  / multilineCode
+  / textStatement
 
 ifStatement = 'if' __ condition:expr EOL children:block
   {
@@ -109,11 +114,6 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
 
   _colorInlineValue = $([0-9a-f]+) / $(integer '%')
   // TODO color code
-
-comment = '//' value:toTheEndOfLine
-  {
-    {type: 'comment', value}
-  }
 
 code = '-' space+ value:toTheEndOfLine
   {

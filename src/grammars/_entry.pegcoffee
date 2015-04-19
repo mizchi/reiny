@@ -7,8 +7,16 @@
 
 start = program
 program = lines:line* { type: 'program', body: lines}
-line = SAMEDENT node:(!EOL s:statement {s}) EOL* {node}
+line = SAMEDENT node:(!EOL s:statement {s}) comment? EOL* {node}
 EOL = "\r\n" / "\n" / "\r"
+
+comment = '//' value:toTheEndOfLine EOL?
+  {
+    {type: 'comment', value}
+  }
+
+toTheEndOfLine = !comment text:$((!EOL .)+) {text}
+block = children: ( INDENT c:line* DEDENT { c }) {children}
 
 SAMEDENT
   = i:[ \t]* &{

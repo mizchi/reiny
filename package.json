@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prepublish": "./script/build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "$(npm bin)/coffee test/test.coffee"
   },
   "author": "mizchi",
   "license": "MIT",
