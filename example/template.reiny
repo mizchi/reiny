@@ -1,29 +1,15 @@
----
-let Foo = React.createClass({
-  render: () => {
-    return React.createElement('div', {className: 'foo'});
-  }
-})
----
-
-div() {
-  backgroundColor = 'red'
+// props and inline style
+.main.container&mainCotnainer(
+  data-id = 'this-is-id'
+) {
+  background-color: #eee
+  width: 640px
+  height: { 40 * 12 }
+  font-size: 1em
 }
-  // CamelCase becomes reference
-  Foo()
-
-  // unicode
-  span(
-    key="--🐑--"
-  )
-
-  // ref with &
-  span&foo()
-
-  // for syntax
-  ul
-    for i in @items
-      li(key=i) = i
+  // text
+  h1 This is a title
+  | expand with span
 
   // if syntax
   if false
@@ -33,12 +19,25 @@ div() {
   if { 2 > 1 }
     a(key='fooo') hoge fuga aaa
 
-  // text
-  | aaaa bbbb
+  // for syntax
+  ul
+    for i in @items
+      li(key=i) = i
 
   // object mixin as property
-  ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
-  foo(
+  - let o = {'data-a': 'aaa', 'data-b': 'bbb'};
+  .foo(
     > o
     onClick = {- function(){console.log('foo')} -}
   )
+
+  // mutli line code
+  ---
+  let Foo = React.createClass({
+    render: () => {
+      return React.createElement('div', {className: 'foo'});
+    }
+  })
+  ---
+  // CamelCase becomes element reference
+  Foo()

@@ -12,5 +12,8 @@
   "license": "MIT",
   "devDependencies": {
     "reiny": "file:.."
+  },
+  "dependencies": {
+    "camelize": "^1.0.0"
   }
 }
