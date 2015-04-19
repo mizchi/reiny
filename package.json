@@ -22,12 +22,13 @@
   },
   "devDependencies": {
     "browserify": "^9.0.8",
-    "mkdirp": "^0.5.0",
-    "js-beautify": "^1.5.5",
-    "pegjs": "^0.8.0",
-    "pegjs-coffee-plugin": "^0.2.2",
     "coffee-script": "^1.9.1",
     "espower-coffee": "^0.10.0",
+    "esprima": "^2.2.0",
+    "js-beautify": "^1.5.5",
+    "mkdirp": "^0.5.0",
+    "pegjs": "^0.8.0",
+    "pegjs-coffee-plugin": "^0.2.2",
     "power-assert": "^0.10.2",
     "react": "git+https://github.com/facebook/react#3c174cacc9428a7d5bf9cc31624010c0004bfc73"
   },

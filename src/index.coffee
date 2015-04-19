@@ -16,13 +16,15 @@ wrapCodeWithExport = (code) ->
   module.exports = #{code};
   """
 
+beautify = require('js-beautify').js_beautify
+
 exports.compile = compile = (source, options = {}) ->
   compile = require './compiler'
   ast = parse(source, options)
   code = compile(ast, options = {})
-  wrapCodeWithExport code
+  beautify wrapCodeWithExport code
 
 exports._compile = _compile = (ast, options = {}) ->
   compile = require './compiler'
   code = compile(ast, options = {})
-  wrapCodeWithExport code
+  beautify wrapCodeWithExport code
