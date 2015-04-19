@@ -3,6 +3,21 @@
   global.ctx = {}
   ctx.indentStack = []
   ctx.indent = ""
+  global.buildTree = (first, rest, builder) ->
+    result = first
+    for i in rest
+      result = builder result, i
+    result
+
+  global.buildBinaryExpression = (first, rest) ->
+    buildTree first, rest, (result, element) ->
+      {
+        type:     "BinaryExpression",
+        operator: element[1]
+        left:     result
+        right:    element[3]
+      }
+
 }
 
 start = program
@@ -44,3 +59,22 @@ space = ' '
 _ = space*
 __ = space+
 __blank = $([ \n\t\r]*)
+
+symbol = $([a-zA-Z_] [a-zA-Z0-9_]*)
+dottableSymbol = $(symbol ('.' symbol)*)
+hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)
+
+reserved
+  = SharedKeywords
+  / JSKeywords
+
+SharedKeywords
+  = ("true" / "false" / "null" / "this" / "new" / "delete" / "typeof" /
+  "instanceof" / "in" / "return" / "throw" / "break" / "continue" / "debugger" /
+  "if" / "else" / "switch" / "for" / "while" / "do" / "try" / "catch" /
+  "finally" / "class" / "extends" / "super") !symbol
+
+JSKeywords
+  = ("case" / "default" / "function" / "var" / "void" / "with" / "const" /
+  "let" / "enum" / "export" / "import" / "native" / "implements" / "interface" /
+  "package" / "private" / "protected" / "public" / "static" / "yield") !symbol
