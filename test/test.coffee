@@ -2,6 +2,7 @@ fs = require 'fs'
 path = require 'path'
 reiny = require('../src/index')
 {inspect} = require('util')
+esprima = require('esprima')
 
 # Try to parse
 list = [
@@ -18,20 +19,24 @@ list = [
 for i in list
   source = fs.readFileSync(path.join __dirname, "fixtures/#{i}.reiny").toString()
   try
-    reiny.parse(source)
+    ast = reiny.parse(source)
+    try
+      compiled = reiny._compile ast
+      Function compiled
+    catch e
+      console.error e
+      throw i + ' invalid output'
+
   catch e
-    throw i + ':' + 'parse failed'
+    console.error e
+    throw i + ' parse failed'
 
 print = (source, options = {}) ->
   beautify = require('js-beautify').js_beautify
   code = reiny.compile source, options
   console.log beautify(code, indent_size: 2)
 
-# sourcePath = 'broken/identifier'
-# sourcePath = 'fixtures/example'
 sourcePath = 'fixtures/text'
-# sourcePath = 'fixtures/style'
-# sourcePath = 'fixtures/modifiers'
 source = fs.readFileSync(path.join __dirname, sourcePath+'.reiny').toString()
 # print(source)
 
