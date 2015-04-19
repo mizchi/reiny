@@ -24,7 +24,6 @@
     "browserify": "^9.0.8",
     "coffee-script": "^1.9.1",
     "espower-coffee": "^0.10.0",
-    "esprima": "^2.2.0",
     "js-beautify": "^1.5.5",
     "mkdirp": "^0.5.0",
     "pegjs": "^0.8.0",
