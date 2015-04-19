@@ -61,7 +61,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     }
 
   property
-    = key:symbol __blank '=' __blank expr: expr
+    = key:hyphenizableSymbol __blank '=' __blank expr: expr
       {
         type: 'property'
         key: key
