@@ -65,18 +65,37 @@ expandObj = (obj) ->
 isUpperCase = (text) ->
   text.toUpperCase() is text
 
+buildPropTypes = (propTypeLines) ->
+  "/* aaa */"
+
 module.exports = compile = (node) ->
   switch node.type
     when 'program'
-      codes = node.body.map (n) -> compile(n)
-      """
-      function(__props) {
+      # TODO: optionable export
+      exportTarget = 'module.exports'
+      codes = node.body
+        .filter (n) -> n.type isnt 'propTypeDeclaration'
+        .map (n) -> compile(n)
+      result = """
+      "use strict";
+      #{exportTarget} = function(__props) {
+        var reiny = require('reiny/runtime');
+        var __extend = reiny.xtend;
+
         if(__props == null) __props = {};
-        return __runtime(function($){
+        return reiny.runtime(function($){
           #{codes.join('\n')}
         });
       }
       """
+
+      propTypes = node.body
+        .filter (n) -> n.type is 'propTypeDeclaration'
+
+      if propTypes.length > 0
+        result += '\n' + buildPropTypes(propTypes)
+
+      result
     when 'element'
       props = buildProps(node)
       propsStr = expandObj props

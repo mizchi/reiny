@@ -8,10 +8,18 @@ esprima = require('esprima')
 list = [
   'classname'
   'code'
+  'comment'
+  'custom-element'
   'embeded-code'
   'example'
   'for'
+  'header'
+  'identifier'
+  'prop-types'
+  # 'inline-expr'
   'indent'
+  'modifiers'
+  'style'
   'mergeable-object'
   'text'
 ]
@@ -24,8 +32,9 @@ for i in list
       compiled = reiny._compile ast
       Function compiled
     catch e
+      console.error i + ' invalid output'
       console.error e
-      throw i + ' invalid output'
+      process.exit(1)
 
   catch e
     console.error e

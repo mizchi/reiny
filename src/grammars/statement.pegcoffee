@@ -8,6 +8,7 @@ statement
   / code
   / multilineCode
   / textStatement
+  / propTypeDeclaration
 
 ifStatement = 'if' __ condition:expr EOL children:block
   {
@@ -120,8 +121,14 @@ code = '-' space+ value:toTheEndOfLine
     {type: 'code', value}
   }
 
-_multilineCodeLeader = '---'
 multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _multilineCodeLeader
   {
     {type: 'multilineCode', value:code}
   }
+  _multilineCodeLeader = '---'
+
+propTypeDeclaration = '@' type:typeDeclaration {type: 'propTypeDeclaration', value: type}
+typeDeclaration = symbol:symbol _ ':' _ expr:_propTypeExpr
+  {type: 'typeDeclaration', propertyName:symbol, typeExpr: expr}
+  _propTypeExpr = typeName:symbol + isArray:'[]'? optional:'?'?
+    {type: 'typeExpr', typeName:typeName, isArray: isArray?, optional: optional?}

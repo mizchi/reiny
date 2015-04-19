@@ -7,24 +7,15 @@ exports.parse = parse = (source) ->
     console.error e
     throw 'ast parse error'
 
-wrapCodeWithExport = (code) ->
-  """
-  "use strict";
-  var reiny = require('reiny/runtime');
-  var __runtime = reiny.runtime;
-  var __extend = reiny.xtend;
-  module.exports = #{code};
-  """
-
 beautify = require('js-beautify').js_beautify
 
 exports.compile = compile = (source, options = {}) ->
   compile = require './compiler'
   ast = parse(source, options)
   code = compile(ast, options = {})
-  beautify wrapCodeWithExport code
+  beautify code
 
 exports._compile = _compile = (ast, options = {}) ->
   compile = require './compiler'
   code = compile(ast, options = {})
-  beautify wrapCodeWithExport code
+  beautify code
