@@ -22,32 +22,23 @@ npm install reiny --save
 template.reiny
 
 ```
----
-let Foo = React.createClass({
-  render: () => {
-    return React.createElement('div', {className: 'foo'});
-  }
-})
----
+// declare propTypes
+@greeting: string
+@items: number[]
 
-div() {
-  backgroundColor = 'red'
+// props and inline style
+.main.container&mainCotnainer(
+  data-id = 'this-is-id'
+) {
+  background-color: #eee
+  width: 640px
+  height: { 40 * 12 }
+  font-size: 1em
 }
-  // CamelCase becomes reference
-  Foo()
-
-  // unicode
-  span(
-    key="--🐑--"
-  )
-
-  // ref with &
-  span&foo()
-
-  // for syntax
-  ul
-    for i in @items
-      li(key=i) = i
+  // text
+  h1 This is a title
+  | expand with span
+  span = @greeting
 
   // if syntax
   if false
@@ -57,15 +48,33 @@ div() {
   if { 2 > 1 }
     a(key='fooo') hoge fuga aaa
 
-  // text
-  | aaaa bbbb
+  // for syntax
+  ul
+    for i in @items
+      li(key=i) = i
 
   // object mixin as property
   - let o = {'data-a': 'aaa', 'data-b': 'bbb'};
-  foo(
+  .foo(
     > o
     onClick = {- function(){console.log('foo')} -}
   )
+
+  // mutli line code
+  ---
+  let Foo = React.createClass({
+    render: () => {
+      return React.createElement('div', {className: 'foo'});
+    }
+  })
+  ---
+  // CamelCase becomes element reference
+  Foo()
+
+  // Embed element direactly
+  - var el = React.createElement(Foo, {})
+  +(el)
+
 ```
 
 ```
@@ -77,7 +86,7 @@ or node module
 
 ```js
 var reiny = require('reiny/lib');
-reiny.compile('foo.bar(prop=1) text');
+reiny.compile('foo.bar(prop=1) text'); // generate code string
 ```
 
 ## How to Use
@@ -90,20 +99,34 @@ npm install reiny --save-dev
 
 ```js
 global.React = require('react');
-var template = require('./template'); // compiled source
+var template = require('./template');
+var C = React.createClass({
+  propTypes: template.propTypes || {},
+  render: function(){
+    return template(this.props);
+  }
+});
+
 console.log(React.renderToStaticMarkup(
-  template({items: [1, 100]}
-)));
+  React.createElement(C, {greeting: 'hello', items: [1, 2]})
+));
 ```
 
 ```html
-<div style="background-color:red;">
+<div data-id="this-is-id" style="background-color:#eee;width:640px;height:480px;font-size:1em;" class="main container">
+  <h1>This is a title</h1>
+  <span>expand with span</span>
+  <span>hello</span>
+  <a>hoge fuga aaa</a>
   <ul>
     <li>1</li>
-
-    <li>100</li>
-  </ul><a>hoge fuga aaa</a><span>aaaa bbbb</span>
+    <li>2</li>
+  </ul>
+  <div data-a="aaa" data-b="bbb" class="foo"></div>
+  <div class="foo"></div>
+  <div class="foo"></div>
 </div>
+
 ```
 
 ## How to develop

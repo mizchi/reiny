@@ -1,10 +1,10 @@
 "use strict";
-var reiny = require('reiny/runtime');
-var __runtime = reiny.runtime;
-var __extend = reiny.xtend;
 module.exports = function(__props) {
+    var reiny = require('reiny/runtime');
+    var __extend = reiny.xtend;
+
     if (__props == null) __props = {};
-    return __runtime(function($) {
+    return reiny.runtime(function($) {
         $('div', {
             'data-id': 'this-is-id',
             'style': {
@@ -18,6 +18,7 @@ module.exports = function(__props) {
         }, function() {
             $('h1', {}, 'This is a title');
             $('span', {}, 'expand with span');
+            $('span', {}, __props.greeting);
             if (false) {
                 $('a', {}, 'hoge fuga aaa')
             };
@@ -55,6 +56,13 @@ module.exports = function(__props) {
                 }
             });;
             $(Foo, {});
+            var el = React.createElement(Foo, {});;
+            $.direct(el);
         })
     });
-};
+}
+var _T = React.PropTypes;
+module.exports.propTypes = {
+    'greeting': _T.string.isRequired,
+    'items': _T.arrayOf(_T.number).isRequired
+}
