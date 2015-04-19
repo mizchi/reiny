@@ -1,0 +1,2 @@
+- var el = React.createElement('div');
++(el)
