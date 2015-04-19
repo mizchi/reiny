@@ -1,5 +1,6 @@
 # postprocess
 Babel = require "babel-core"
+camelize = require 'camelize'
 
 transformCode = (code) ->
   Babel.transform(code)
@@ -25,7 +26,8 @@ buildProps = (node) ->
   if node.styles?
     style = {}
     for s in node.styles.children
-      style[s.key] = compile(s.expr)
+      # camelize for react style
+      style[camelize s.key] = compile(s.expr)
     obj.style = style
 
   # classes and id
