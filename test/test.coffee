@@ -50,9 +50,14 @@ if target = process.argv[3] ? process.argv[2]
   console.log code # show code
 
   # exec
-  global.React = require('react')
-  eval(code
-    .replace("module.exports", "global.__tmp")
-    .replace("require('reiny/runtime')", "require('../runtime')")
-  )
-  console.error React.renderToStaticMarkup __tmp()
+  execTemp = ->
+    global.React = require('react')
+    eval(code
+      .replace("module.exports", "global.__tmp")
+      .replace("require('reiny/runtime')", "require('../runtime')")
+    )
+    c = React.createClass
+      propTypes: __tmp.propTypes ? {}
+      render: -> __tmp()
+    console.error React.renderToStaticMarkup React.createElement(c, {})
+  execTemp()

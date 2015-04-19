@@ -66,12 +66,30 @@ isUpperCase = (text) ->
   text.toUpperCase() is text
 
 buildPropTypes = (propTypeLines) ->
-  "/* aaa */"
+  propTypes = {}
+  for propType in propTypeLines
+    # console.error "key", propType
+    propertyName = propType.value.propertyName
+    typeName = propType.value.typeExpr.typeName
+    typeCode =
+      if propType.value.typeExpr.isArray
+        "_T.arrayOf(_T.#{typeName})"
+      else
+        "_T.#{typeName}"
+
+    unless propType.value.typeExpr.optional
+      typeCode += ".isRequired"
+
+    propTypes[propertyName] = typeCode
+
+  # console.error propTypes
+  # console.error expandObj propTypes
+  expandObj propTypes
 
 module.exports = compile = (node) ->
   switch node.type
     when 'program'
-      # TODO: optionable export
+      # TODO: optional export
       exportTarget = 'module.exports'
       codes = node.body
         .filter (n) -> n.type isnt 'propTypeDeclaration'
@@ -93,7 +111,7 @@ module.exports = compile = (node) ->
         .filter (n) -> n.type is 'propTypeDeclaration'
 
       if propTypes.length > 0
-        result += '\n' + buildPropTypes(propTypes)
+        result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
 
       result
     when 'element'
@@ -126,6 +144,9 @@ module.exports = compile = (node) ->
 
     when 'free'
       node.value
+
+    when 'propTypeDeclaration'
+      throw 'propTypeDeclaration is only allowed on toplevel'
 
     when 'if'
       children = node.body.map (child) -> compile(child)

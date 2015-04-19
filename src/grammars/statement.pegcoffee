@@ -130,5 +130,5 @@ multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _mul
 propTypeDeclaration = '@' type:typeDeclaration {type: 'propTypeDeclaration', value: type}
 typeDeclaration = symbol:symbol _ ':' _ expr:_propTypeExpr
   {type: 'typeDeclaration', propertyName:symbol, typeExpr: expr}
-  _propTypeExpr = typeName:symbol + isArray:'[]'? optional:'?'?
+  _propTypeExpr = typeName:$(symbol) + isArray:'[]'? optional:'?'?
     {type: 'typeExpr', typeName:typeName, isArray: isArray?, optional: optional?}
