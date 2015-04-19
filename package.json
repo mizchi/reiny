@@ -1,6 +1,6 @@
 {
   "name": "reiny",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Template engine for React",
   "main": "runtime.js",
   "bin": {
@@ -26,7 +26,6 @@
     "pegjs-coffee-plugin": "^0.2.2",
     "coffee-script": "^1.9.1",
     "espower-coffee": "^0.10.0",
-    "pegjs": "^0.8.0",
     "power-assert": "^0.10.2",
     "react": "git+https://github.com/facebook/react#3c174cacc9428a7d5bf9cc31624010c0004bfc73"
   },
@@ -39,7 +38,10 @@
     "url": "https://github.com/mizchi/reiny.git"
   },
   "keywords": [
-    "react", "template", "jade", "reiny"
+    "react",
+    "template",
+    "jade",
+    "reiny"
   ],
   "bugs": {
     "url": "https://github.com/mizchi/reiny/issues"
