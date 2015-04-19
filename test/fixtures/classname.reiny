@@ -1,4 +1,4 @@
-` var bar = 'baz';
+- var bar = 'baz';
 .foo(
   className = bar
 )

@@ -1,12 +1,12 @@
-` let items = [1, 2, 3];
+- let items = [1, 2, 3];
 
-```
+---
 let Foo = React.createClass({
   render: () => {
     return React.createElement('div', {className: 'foo'});
   }
 })
-```
+---
 
 div(onClick = onClick) {
   backgroundColor = 'red'
@@ -39,7 +39,7 @@ div(onClick = onClick) {
   | aaaa bbbb
 
   // object mixin as property
-  ` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
+  - let o = {'data-a': 'aaa', 'data-b': 'bbb'};
   foo(
     > o
     onClick = {- function(){console.log('foo')} -}

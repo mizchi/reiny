@@ -1,9 +1,9 @@
-```
+---
 var Foo = React.createClass({
   render: function(){
     return React.createElement('div', {className: 'foo'});
   }
 })
-```
+---
 
 Foo()

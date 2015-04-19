@@ -1,10 +1,10 @@
-```
+---
 let Foo = React.createClass({
   render: () => {
     return React.createElement('div', {className: 'foo'});
   }
 })
-```
+---
 
 div() {
   backgroundColor = 'red'

@@ -1,5 +1,5 @@
-` let o = {'data-a': 'aaa', 'data-b': 'bbb'};
-` let p = {'data-c': 3, 'data-id': 4};
+- let o = {'data-a': 'aaa', 'data-b': 'bbb'};
+- let p = {'data-c': 3, 'data-id': 4};
 foo(
   > o
   > p

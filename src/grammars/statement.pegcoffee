@@ -84,12 +84,12 @@ comment = '//' value:toTheEndOfLine
     {type: 'comment', value}
   }
 
-code = ('-' / '`') space+ value:toTheEndOfLine
+code = '-' space+ value:toTheEndOfLine
   {
     {type: 'code', value}
   }
 
-_multilineCodeLeader = '```'
+_multilineCodeLeader = '---'
 multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _multilineCodeLeader
   {
     {type: 'multilineCode', value:code}
