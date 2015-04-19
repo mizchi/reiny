@@ -31,15 +31,11 @@ for i in list
     console.error e
     throw i + ' parse failed'
 
-print = (source, options = {}) ->
-  beautify = require('js-beautify').js_beautify
-  code = reiny.compile source, options
-  console.log beautify(code, indent_size: 2)
+# console.log 'args',
+if target = process.argv[3] ? process.argv[2]
+  console.error 'exec', target
+  source = fs.readFileSync(path.join process.cwd(), target).toString()
 
-sourcePath = 'fixtures/text'
-source = fs.readFileSync(path.join __dirname, sourcePath+'.reiny').toString()
-# print(source)
-
-console.error inspect reiny.parse(source), depth: null
-ast = reiny.parse(source)
-console.log reiny._compile(ast)
+  ast = reiny.parse(source)
+  console.error inspect ast, depth: null # show ast
+  console.log reiny._compile(ast) # show code

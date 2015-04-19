@@ -1,5 +1,9 @@
 // a
 div
+/* */
+  span //b
+/*
+   */
   span
     // c
   // d
