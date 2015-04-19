@@ -113,7 +113,7 @@ element = s:assignable props:props? _ styles:styles? _ children: _elementChildre
     {type: 'string', value: v}
   _colorValue = v:(
       $(
-        '#' [0-9a-f]+)
+        '#' [0-9a-fA-F]+)
         / 'rgb(' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ')'
         / 'rgba(' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ')'
       )
