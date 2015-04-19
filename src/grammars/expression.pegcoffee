@@ -17,6 +17,6 @@ embededExpr
 toTheEndOfLine = text:$((!EOL .)+) EOL {text}
 block = children: ( INDENT c:line* DEDENT { c }) {children}
 
-symbol = $([a-zA-Z_] [a-zA-Z\d_]*)
+symbol = $([a-zA-Z_] [a-zA-Z0-9_]*)
 dottableSymbol = $(symbol ('.' symbol)*)
 hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)
