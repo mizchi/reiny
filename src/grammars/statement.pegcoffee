@@ -11,12 +11,17 @@ statement
   / textStatement
   / propTypeDeclaration
 
-ifStatement = 'if' __ condition:expr _ EOL children:block
+ifStatement = 'if' __ condition:expr _ EOL children:block consequent:_elseIf* _else:_else?
   {
     type: 'if'
     condition: condition
+    consequents: consequent
+    alternate: _else
     body: children
   }
+
+  _elseIf = SAMEDENT 'else' __ 'if' __ condition:expr _ EOL children:block
+  _else = SAMEDENT 'else' _ EOL children:block
 
 forStatement =
   'for' __ left:singleIdentifier second:(_ ',' _ i:singleIdentifier {i})?

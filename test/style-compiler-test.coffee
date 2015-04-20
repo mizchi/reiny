@@ -14,6 +14,7 @@ list = [
   'embeded-code'
   'example'
   'for'
+  'if'
   'header'
   'identifier'
   'prop-types'

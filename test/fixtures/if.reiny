@@ -1,0 +1,7 @@
+if true
+  a
+else if false
+  b
+    c
+else
+  c
