@@ -129,6 +129,53 @@ console.log(React.renderToStaticMarkup(
 
 ```
 
+## SCSS Compiler(experimental)
+
+```
+.foo {
+  color: 'green'
+}
+  if true
+    if true
+      .quux {
+        color: #eee
+      }
+  .bar {
+    color: 'red'
+  }
+    .baz {
+      color: 'blue'
+    }
+    if false
+      .fuba {
+        color: value
+      }
+```
+
+to
+
+```
+reiny template.reiny --scss
+```
+
+```
+.foo {
+  color:'green';
+  .bar {
+    color:'red';
+    .baz {
+      color:'blue';
+    }
+    .fuba {
+      color:$value;
+    }
+  }
+  .quux {
+    color:'#eee';
+  }
+}
+```
+
 ## How to develop
 
 ```

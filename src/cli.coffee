@@ -20,13 +20,12 @@ run = (target, argv) ->
   source = fs.readFileSync(targetPath).toString()
   code =
     if argv.scss
-      # compile
       styleCompiler = require '../lib/style-compiler'
       ast = reiny.parse source
       styleCompiler ast
     else
       # compile
-      code = reiny.compile source
+      reiny.compile source
 
   # TODO: auto generate filename by extname
   if argv.out or argv.o
