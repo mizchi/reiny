@@ -6,6 +6,14 @@
       .quux {
         color: #eee
       }
+    else if { false }
+      span() {
+        color: @foo
+      }
+  else
+    .bbb {
+      color: bar
+    }
   .bar {
     color: 'red'
   }

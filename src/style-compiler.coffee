@@ -44,7 +44,26 @@ parse = (node) ->
       else
         {selector: selectors.join(''), styles}
 
-    when 'if', 'forIn', 'forOf'
+    when 'if'
+      list = [].concat(
+        flatten(node.body)
+      ).concat(
+        if node.consequents?.length
+          _l = []
+          node.consequents.forEach (consequent) ->
+            _l = _l.concat(flatten consequent.body)
+          _l
+        else
+          []
+      ).concat(
+        if node.alternate?
+          flatten(node.alternate.body)
+        else
+          []
+      )
+      {type: 'para', children:list}
+
+    when 'forIn', 'forOf'
       list = flatten(node.body)
       {type: 'para', children:list}
 
@@ -55,7 +74,7 @@ parse = (node) ->
     when 'identifier'
       '$' + node.value
     when 'thisIdentifier'
-      "__props\.#{node.value}"
+      '$' + node.value
     else
       null
 

@@ -34,7 +34,7 @@ if target = process.argv[3] ? process.argv[2]
 
   source = fs.readFileSync(path.join process.cwd(), target).toString()
   ast = reiny.parse(source)
-  # console.error inspect ast, depth: null # show ast
+  console.error inspect ast, depth: null # show ast
   code = styleCompile(ast) # show code
   console.log code
   # execTemp()
