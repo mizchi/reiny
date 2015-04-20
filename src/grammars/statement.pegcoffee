@@ -21,7 +21,9 @@ ifStatement = 'if' __ condition:expr _ EOL children:block consequent:_elseIf* _e
   }
 
   _elseIf = SAMEDENT 'else' __ 'if' __ condition:expr _ EOL children:block
+    {type: 'consequent', condition:condition, body:children}
   _else = SAMEDENT 'else' _ EOL children:block
+    {type: 'aliternate', body:children}
 
 forStatement =
   'for' __ left:singleIdentifier second:(_ ',' _ i:singleIdentifier {i})?

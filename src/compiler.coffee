@@ -153,13 +153,33 @@ module.exports = compile = (node) ->
       throw 'propTypeDeclaration is only allowed on toplevel'
 
     when 'if'
-      children = node.body.map (child) -> compile(child)
-      childrenCode = children.join(';')
       condCode = compile node.condition
 
-      """
+      children = node.body.map (child) -> compile(child)
+      childrenCode = children.join(';')
+
+      ifCode = """
       if(#{condCode}) { #{childrenCode} }
       """
+
+      if node.consequents?.length
+        for consequent in node.consequents
+          consequentCondCode = compile consequent.condition
+          consequentCode =
+            consequent.body
+              .map((child) -> compile(child))
+              .join(';')
+
+          ifCode += "else if(#{consequentCondCode}) { #{consequentCode} }"
+
+      if node.alternate?
+        alternateChildrenCode =
+          node.alternate.body
+            .map((child) -> compile(child))
+            .join(';')
+        ifCode += "else { #{alternateChildrenCode} }"
+
+      ifCode
 
     when 'forIn'
       bodyCode = node.body
