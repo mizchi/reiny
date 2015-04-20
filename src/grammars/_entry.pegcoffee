@@ -21,8 +21,16 @@
 }
 
 start = program
-program = lines:line* __blank { type: 'program', body: lines}
-line = SAMEDENT node:(!EOL s:statement {s}) comment? EOL* {node}
+program = lines:topLevelLine* __blank { type: 'program', body: lines}
+
+topLevelLine
+  = SAMEDENT node:(!EOL s:topLevelStatement {s}) comment? EOL* {node}
+
+line
+  = SAMEDENT node:(!EOL s:statement {s}) comment? EOL* {node}
+
+block = children: ( INDENT c:line* DEDENT { c }) {children}
+  
 EOL = "\r\n" / "\n" / "\r"
 
 comment = '//' value:toTheEndOfLine EOL?
@@ -31,7 +39,6 @@ comment = '//' value:toTheEndOfLine EOL?
   }
 
 toTheEndOfLine = !comment text:$((!EOL .)+) {text}
-block = children: ( INDENT c:line* DEDENT { c }) {children}
 
 SAMEDENT
   = i:[ \t]* &{

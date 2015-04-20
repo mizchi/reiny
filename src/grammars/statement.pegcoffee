@@ -1,6 +1,11 @@
 //////////////////
 // Statements
 //////////////////
+
+topLevelStatement
+  = propTypeDeclaration
+  / statement
+
 statement
   = forStatement
   / ifStatement
@@ -9,7 +14,6 @@ statement
   / code
   / multilineCode
   / textStatement
-  / propTypeDeclaration
 
 ifStatement = 'if' __ condition:expr _ EOL children:block consequent:_elseIf* _else:_else?
   {
