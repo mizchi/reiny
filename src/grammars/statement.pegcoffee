@@ -11,7 +11,7 @@ statement
   / textStatement
   / propTypeDeclaration
 
-ifStatement = 'if' __ condition:expr EOL children:block
+ifStatement = 'if' __ condition:expr _ EOL children:block
   {
     type: 'if'
     condition: condition

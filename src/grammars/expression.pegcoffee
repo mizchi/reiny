@@ -2,7 +2,7 @@
 // Expressions
 //////////////
 
-expr = MultiplicativeExpression / primitive / embededExpr / identifier
+expr = primitive / embededExpr / identifier
 identifier = thisIdentifier / memberAccessableIdentifier / singleIdentifier
 singleIdentifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
 thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
@@ -33,7 +33,9 @@ PostfixExpression
 PostfixOperator
   = "++"
   / "--"
-*/
+
+PrimaryExpression
+  = "(" __ expression:Expression __ ")" { return expression; }
 
 UnaryExpression
   //= PostfixExpression
@@ -238,3 +240,5 @@ VarToken        = "var"        !IdentifierPart
 VoidToken       = "void"       !IdentifierPart
 WhileToken      = "while"      !IdentifierPart
 WithToken       = "with"       !IdentifierPart
+
+*/
