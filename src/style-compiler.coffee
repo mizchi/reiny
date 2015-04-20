@@ -49,7 +49,7 @@ parse = (node) ->
       {type: 'para', children:list}
 
     when 'string'
-      "\'#{node.value}\'"
+      "#{node.value}"
     when 'number'
       "#{node.value}"
     when 'identifier'
