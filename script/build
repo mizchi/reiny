@@ -1,4 +1,2 @@
 #!/usr/bin/env sh
 $(npm bin)/coffee -o lib -c src/*.coffee
-./script/build-parser
-$(npm bin)/browserify lib/runtime.js -o runtime.js -s reiny
