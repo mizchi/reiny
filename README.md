@@ -27,7 +27,7 @@ template.reiny
 @items: number[]
 
 // props and inline style
-.main.container&mainCotnainer(
+.main.container(
   data-id = 'this-is-id'
 ) {
   background-color: #eee
@@ -37,6 +37,10 @@ template.reiny
 }
   // text
   h1 This is a title
+
+  // ref alias by & modifier
+  foo&foo
+
   | expand with span
   span = @greeting
 

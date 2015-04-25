@@ -1,11 +1,13 @@
-.main.container&mainCotnainer(
+// props and inline style
+.main.container(
   data-id = 'this-is-id'
 ) {
   background-color: #eee
   width: 640px
-  height: { 40 * 12 }
+  height: 300px
   font-size: 1em
 }
+  // text
   h1 This is a title
   | expand with span
   span = @greeting
@@ -21,7 +23,7 @@
   // for syntax
   ul
     for i in @items
-      li(key=i) = i
+      li item
 
   // object mixin as property
   - let o = {'data-a': 'aaa', 'data-b': 'bbb'};
@@ -29,18 +31,3 @@
     > o
     onClick = {- function(){console.log('foo')} -}
   )
-
-  // mutli line code
-  ---
-  let Foo = React.createClass({
-    render: () => {
-      return React.createElement('div', {className: 'foo'});
-    }
-  })
-  ---
-  // CamelCase becomes element reference
-  Foo()
-
-  // Embed element direactly
-  - var el = React.createElement(Foo, {})
-  +(el)

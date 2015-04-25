@@ -19,4 +19,4 @@ exports._compile = _compile = (ast, options = {}) ->
 # string => string
 exports.compile = (source, options = {}) ->
   ast = parse(source, options)
-  _compile(source, options)
+  _compile(ast, options)

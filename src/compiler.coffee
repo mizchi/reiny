@@ -200,27 +200,26 @@ _compile = (node) ->
     else
       throw 'unknow node: ' + node.type
 
-module.exports = compile = (node, options = {}) ->
+# ProgramNode => string
+module.exports = (node, options = {}) ->
   exportTarget = options.export ? 'module.exports'
   codes = node.body
-    .filter (n) -> n.type isnt 'propTypeDeclaration'
-    .map (n) -> _compile(n)
+    .filter((n) -> n.type isnt 'propTypeDeclaration')
+    .map((n) -> _compile(n))
+
   result = """
   "use strict";
   #{exportTarget} = function(__props) {
-    var reiny = require('reiny/runtime');
+    var reiny = require('reiny');
     var __extend = reiny.xtend;
-
     if(__props == null) __props = {};
     return reiny.runtime(function($){
       #{codes.join('\n')}
-    }, {type: '#{options.target ? 'react'}'});
+    }, {target: '#{options.target ? 'react'}'});
   }
   """
 
-  propTypes = node.body
-    .filter (n) -> n.type is 'propTypeDeclaration'
-
+  propTypes = node.body.filter (n) -> n.type is 'propTypeDeclaration'
   if propTypes.length > 0
     result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
 

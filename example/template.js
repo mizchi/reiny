@@ -59,10 +59,7 @@ module.exports = function(__props) {
             var el = React.createElement(Foo, {});;
             $.direct(el);
         })
+    }, {
+        type: 'react'
     });
-}
-var _T = React.PropTypes;
-module.exports.propTypes = {
-    'greeting': _T.string.isRequired,
-    'items': _T.arrayOf(_T.number).isRequired
 }
