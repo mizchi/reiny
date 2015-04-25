@@ -3,6 +3,7 @@
   global.ctx = {}
   ctx.indentStack = []
   ctx.indent = ""
+
   global.buildTree = (first, rest, builder) ->
     result = first
     for i in rest
@@ -17,6 +18,20 @@
         left:     result
         right:    element[3]
       }
+
+  r = (node) ->
+    node.raw = text().replace /[\uEFEF\uEFFE\uEFFF]/g, ''
+    node
+  # store position information
+  p = (node) ->
+    node.line = line()
+    node.column = column()
+    node.offset = offset()
+    node
+
+  # composition of r and p
+  global.__rp = (node) -> r p node
+
 }
 
 start = self:program {
@@ -26,7 +41,7 @@ start = self:program {
   self
 }
 
-program = lines:topLevelLine* __blank { type: 'program', body: lines}
+program = lines:topLevelLine* __blank { __rp type: 'program', body: lines}
 
 topLevelLine
   = SAMEDENT node:(!EOL s:topLevelStatement {s}) comment? EOL* {node}
@@ -40,7 +55,7 @@ EOL = "\r\n" / "\n" / "\r"
 
 comment = '//' value:toTheEndOfLine EOL?
   {
-    {type: 'comment', value}
+    __rp({type: 'comment', value})
   }
 
 toTheEndOfLine = !comment text:$((!EOL .)+) {text}

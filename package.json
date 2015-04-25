@@ -18,6 +18,8 @@
     "js-beautify": "^1.5.5",
     "minimist": "^1.1.1",
     "sass-convert": "^0.5.0",
+    "pegjs": "^0.8.0",
+    "pegjs-coffee-plugin": "^0.2.2",
     "strip-comments": "^0.3.2",
     "virdy": "^0.3.0",
     "xtend": "^4.0.0"
@@ -28,8 +30,6 @@
     "espower-coffee": "^0.10.0",
     "js-beautify": "^1.5.5",
     "mkdirp": "^0.5.0",
-    "pegjs": "^0.8.0",
-    "pegjs-coffee-plugin": "^0.2.2",
     "power-assert": "^0.10.2",
     "react": "git+https://github.com/facebook/react#3c174cacc9428a7d5bf9cc31624010c0004bfc73",
     "sass-convert": "^0.5.0"

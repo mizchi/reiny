@@ -2,12 +2,12 @@
 
 primitive = boolean / number / string
 
-boolean = v:_boolean {type: 'boolean', value: v}
-number = v:$(_number) {type: 'number', value: v}
+boolean = v:_boolean {__rp type: 'boolean', value: v}
+number = v:$(_number) {__rp type: 'number', value: v}
 string = value:_string
   {
     v = value.replace(/'/g, '').replace(/"/g, '')
-    type: 'string', value: v
+    __rp type: 'string', value: v
   }
 
 // boolean

@@ -16,136 +16,144 @@ statement
   / textStatement
 
 ifStatement = 'if' __ condition:expr _ EOL children:block consequent:_elseIf* _else:_else?
-  {
-    type: 'if'
-    condition: condition
-    consequents: consequent
-    alternate: _else
-    body: children
+  {  __rp
+      type: 'if'
+      condition: condition
+      consequents: consequent
+      alternate: _else
+      body: children
   }
 
   _elseIf = SAMEDENT 'else' __ 'if' __ condition:expr _ EOL children:block
-    {type: 'consequent', condition:condition, body:children}
+    { __rp type: 'consequent', condition:condition, body:children}
   _else = SAMEDENT 'else' _ EOL children:block
-    {type: 'aliternate', body:children}
+    { __rp type: 'aliternate', body:children}
 
 forStatement =
   'for' __ left:singleIdentifier second:(_ ',' _ i:singleIdentifier {i})?
   __ forType:('in'/'of')
   __ right:expr EOL children:block
-  {
-    type: if forType is 'in' then 'forIn' else 'forOf'
-    left: left
-    second: second
-    right: right
-    body: children
+  { __rp
+      type: if forType is 'in' then 'forIn' else 'forOf'
+      left: left
+      second: second
+      right: right
+      body: children
   }
 
-textStatement = '|' _ text:toTheEndOfLine {type: 'text', value: text}
+textStatement = '|' _ text:toTheEndOfLine { __rp type: 'text', value: text}
 
 directElement = '+(' _ symbol:dottableSymbol _ ')'
   {
-    type: 'directElement', value: symbol
+     __rp type: 'directElement', value: symbol
   }
 
 element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
   {
-    {type: 'element', value: s, children, props, styles}
+     __rp {type: 'element', value: s, children, props, styles}
   }
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
-    / !EOL _ !'=' _ text:toTheEndOfLine {{type: 'inlineText', value: text}}
+    / !EOL _ !'=' _ text:toTheEndOfLine { __rp {type: 'inlineText', value: text}}
     / !EOL _ '=' _ expr: expr {expr}
   assignable
     =
       elementName:singleIdentifier modifiers:modifier*
-      {
-        type: 'element'
-        elementType: elementName.value
-        modifiers: modifiers
-      }
+        {
+          __rp {
+            type: 'element'
+            elementType: elementName.value
+            modifiers: modifiers
+          }
+        }
     /
       modifiers:modifier+
-      {
-        type: 'element'
-        elementType: 'div'
-        modifiers: modifiers
-      }
+        {
+          __rp {
+            type: 'element'
+            elementType: 'div'
+            modifiers: modifiers
+          }
+        }
   modifier = className / id / ref
-  className = '.' className:hyphenizableSymbol {type: 'className', value:className}
-  id = '#' id:hyphenizableSymbol {type: 'id', value: id}
-  ref = '&' ref:hyphenizableSymbol {type: 'ref', value: ref}
-  key = ':' ref:hyphenizableSymbol {type: 'key', value: ref}
+  className = '.' className:hyphenizableSymbol { __rp type: 'className', value:className}
+  id = '#' id:hyphenizableSymbol { __rp type: 'id', value: id}
+  ref = '&' ref:hyphenizableSymbol { __rp type: 'ref', value: ref}
+  key = ':' ref:hyphenizableSymbol { __rp type: 'key', value: ref}
 
   props = "(" __blank props:(p:property __blank {p})* ")"
     {
-      type: 'props'
-      children: props
+      __rp
+        type: 'props'
+        children: props
     }
 
   property
     = key:hyphenizableSymbol _ '=' _ expr: expr
       {
-        type: 'property'
-        key: key
-        expr: expr
+        __rp
+          type: 'property'
+          key: key
+          expr: expr
       }
-    / '>' _ key:dottableSymbol {
+    / '>' _ key:dottableSymbol
       {
-        type: 'mergeable-object'
-        key: key
+        __rp
+          type: 'mergeable-object'
+          key: key
       }
-    }
 
   styles = "{" __blank props:(p:_styleProperty __blank {p})* "}"
     {
-      type: 'styles'
-      children: props
+      __rp
+        type: 'styles'
+        children: props
     }
 
   _styleProperty
     = key:hyphenizableSymbol _ ('='/':') _ expr:_styleExpr _ ';'?
       {
-        type: 'property'
-        key: key
-        expr: expr
+        __rp
+          type: 'property'
+          key: key
+          expr: expr
       }
-    / '>' _ key:dottableSymbol {
+    / '>' _ key:dottableSymbol
       {
-        type: 'mergeable-object'
-        key: key
+        __rp
+          type: 'mergeable-object'
+          key: key
       }
-    }
 
   _styleExpr = _stylableValue / expr
   _stylableValue = _suffixedValue / _colorValue
 
   _suffixedValue = v:$(number ('px' / 'em' / 'ex' / 'rem' / 'cm' / 'mm' / 'in' / 'pt' / 'pc' / '%'))
-    {type: 'string', value: v}
+    { __rp type: 'string', value: v}
   _colorValue = v:(
       $(
         '#' [0-9a-fA-F]+)
         / 'rgb(' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ')'
         / 'rgba(' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ',' _ _colorInlineValue _ ')'
       )
-    {type: 'string', value: v}
+    { __rp type: 'string', value: v}
 
   _colorInlineValue = $([0-9a-f]+) / $(integer '%')
   // TODO color code
 
 code = '-' space+ value:toTheEndOfLine
   {
-    {type: 'code', value}
+    __rp {type: 'code', value}
   }
 
 multilineCode = _multilineCodeLeader EOL code:$((!_multilineCodeLeader .)*) _multilineCodeLeader
   {
-    {type: 'multilineCode', value:code}
+    __rp {type: 'multilineCode', value:code}
   }
   _multilineCodeLeader = '---'
 
-propTypeDeclaration = '@' type:typeDeclaration {type: 'propTypeDeclaration', value: type}
+propTypeDeclaration = '@' type:typeDeclaration {__rp type: 'propTypeDeclaration', value: type}
 typeDeclaration = symbol:symbol _ ':' _ expr:_propTypeExpr
-  {type: 'typeDeclaration', propertyName:symbol, typeExpr: expr}
+  {__rp type: 'typeDeclaration', propertyName:symbol, typeExpr: expr}
   _propTypeExpr = typeName:$(symbol) + isArray:'[]'? optional:'?'?
-    {type: 'typeExpr', typeName:typeName, isArray: isArray?, optional: optional?}
+    {__rp type: 'typeExpr', typeName:typeName, isArray: isArray?, optional: optional?}

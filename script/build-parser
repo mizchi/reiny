@@ -20,6 +20,7 @@ getGrammarSource = ->
     .join('\n')
 
 grammar = getGrammarSource()
+fs.writeFileSync((path.join __dirname, '../grammar.pegcoffee'), grammar)
 try
   parser = PEG.buildParser grammar, plugins: [coffee]
   result = 'module.exports = ' + parser.parse.toString()

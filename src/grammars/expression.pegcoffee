@@ -4,13 +4,13 @@
 
 expr = primitive / embededExpr / identifier
 identifier = thisIdentifier / memberAccessableIdentifier / singleIdentifier
-singleIdentifier = !reserved symbol:symbol {type: 'identifier', value: symbol}
-thisIdentifier = !reserved '@' s:dottableSymbol {type:'thisIdentifier', value: s}
-memberAccessableIdentifier = !reserved symbol:dottableSymbol {type: 'identifier', value: symbol}
+singleIdentifier = !reserved symbol:symbol {__rp type: 'identifier', value: symbol}
+thisIdentifier = !reserved '@' s:dottableSymbol {__rp type:'thisIdentifier', value: s}
+memberAccessableIdentifier = !reserved symbol:dottableSymbol {__rp type: 'identifier', value: symbol}
 
 embededExpr
-  = '{-' code:$((!'-}' .)*) '-}' {type: 'embededExpr', value: code}
-  / '{' code:$((!'}' .)*) '}' {type: 'embededExpr', value: code}
+  = '{-' code:$((!'-}' .)*) '-}' {__rp type: 'embededExpr', value: code}
+  / '{' code:$((!'}' .)*) '}' {__rp type: 'embededExpr', value: code}
 
 // binary expression
 

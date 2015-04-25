@@ -2,7 +2,6 @@ fs = require 'fs'
 path = require 'path'
 reiny = require('../src/index')
 {inspect} = require('util')
-esprima = require('esprima')
 
 # Try to parse
 list = [
@@ -41,24 +40,30 @@ for i in list
     console.error e
     throw i + ' parse failed'
 
+# exec
+execTemp = (code) ->
+  global.React = require('react')
+  eval(code
+    .replace("module.exports", "global.__tmp")
+    .replace("require('reiny/runtime')", "require('../runtime')")
+  )
+  c = React.createClass
+    propTypes: __tmp.propTypes ? {}
+    render: -> __tmp()
+  console.error React.renderToStaticMarkup React.createElement(c, {})
+
 if target = process.argv[3] ? process.argv[2]
   console.error 'exec', target
 
-  # exec
-  execTemp = ->
-    global.React = require('react')
-    eval(code
-      .replace("module.exports", "global.__tmp")
-      .replace("require('reiny/runtime')", "require('../runtime')")
-    )
-    c = React.createClass
-      propTypes: __tmp.propTypes ? {}
-      render: -> __tmp()
-    console.error React.renderToStaticMarkup React.createElement(c, {})
-
   source = fs.readFileSync(path.join process.cwd(), target).toString()
-  ast = reiny.parse(source)
+  ast = null
+  try
+    ast = reiny.parse(source)
+  catch e
+    formatter = require('../src/format-error.coffee')
+    throw new Error (formatter source, e)
+
   console.error inspect ast, depth: null # show ast
-  code = reiny._compile(ast) # show code
+  code = reiny._compile(ast)
   console.log code # show code
-  # execTemp()
+  # execTemp(code)
