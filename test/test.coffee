@@ -45,7 +45,7 @@ execTemp = (code) ->
   global.React = require('react')
   eval(code
     .replace("module.exports", "global.__tmp")
-    .replace("require('reiny/runtime')", "require('../runtime')")
+    .replace("require('reiny/runtime')", "require('../src/runtime')")
   )
   c = React.createClass
     propTypes: __tmp.propTypes ? {}
