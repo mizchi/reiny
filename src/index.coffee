@@ -26,7 +26,11 @@ parser = PEG.buildParser grammar, plugins: [coffee]
 exports.parse = parse = (source, options = {}) ->
   preprocess = require './preprocess'
   preprocessed = preprocess source
-  parser.parse preprocessed, options
+  try
+    return parser.parse preprocessed, options
+  catch e
+    formatter = require('../src/format-error.coffee')
+    throw new Error (formatter source, e)
 
 # AST => string
 exports._compile = _compile = (ast, options = {}) ->
