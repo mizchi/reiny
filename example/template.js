@@ -1,9 +1,9 @@
 "use strict";
-module.exports = function(__props) {
+module.exports = function(self) {
     var reiny = require('reiny/runtime');
     var __extend = reiny.xtend;
 
-    if (__props == null) __props = {};
+    if (self == null) self = {};
     return reiny.runtime(function($) {
         $('div', {
             'data-id': 'this-is-id',
@@ -18,7 +18,7 @@ module.exports = function(__props) {
         }, function() {
             $('h1', {}, 'This is a title');
             $('span', {}, 'expand with span');
-            $('span', {}, __props.greeting);
+            $('span', {}, self.greeting);
             if (false) {
                 $('a', {}, 'hoge fuga aaa')
             };
@@ -28,9 +28,9 @@ module.exports = function(__props) {
                 }, 'hoge fuga aaa')
             };
             $('ul', {}, function() {
-                for (var __i in __props.items) {
+                for (var __i in self.items) {
 
-                    var i = __props.items[__i];
+                    var i = self.items[__i];
                     $('li', {
                         'key': i
                     }, i);;

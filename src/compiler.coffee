@@ -196,7 +196,7 @@ _compile = (node) ->
     when 'identifier'
       node.value
     when 'thisIdentifier'
-      "__props\.#{node.value}"
+      "self\.#{node.value}"
     else
       throw 'unknow node: ' + node.type
 
@@ -209,10 +209,10 @@ module.exports = (node, options = {}) ->
 
   result = """
   "use strict";
-  #{exportTarget} = function(__props) {
+  #{exportTarget} = function(self) {
     var reiny = require('reiny');
     var __extend = reiny.xtend;
-    if(__props == null) __props = {};
+    if(self == null) self = {};
     return reiny.runtime(function($){
       #{codes.join('\n')}
     }, {target: '#{options.target ? 'react'}'});
