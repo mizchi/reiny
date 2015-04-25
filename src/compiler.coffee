@@ -201,7 +201,7 @@ _compile = (node) ->
       throw 'unknow node: ' + node.type
 
 module.exports = compile = (node, options = {}) ->
-  exportTarget = 'module.exports'
+  exportTarget = options.export ? 'module.exports'
   codes = node.body
     .filter (n) -> n.type isnt 'propTypeDeclaration'
     .map (n) -> _compile(n)
@@ -214,7 +214,7 @@ module.exports = compile = (node, options = {}) ->
     if(__props == null) __props = {};
     return reiny.runtime(function($){
       #{codes.join('\n')}
-    }, {type: #{options.target ? 'react'}});
+    }, {type: '#{options.target ? 'react'}'});
   }
   """
 
