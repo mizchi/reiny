@@ -17,10 +17,15 @@
         left:     result
         right:    element[3]
       }
-
 }
 
-start = program
+start = self:program {
+  global.ctx = {}
+  ctx.indentStack = []
+  ctx.indent = ""
+  self
+}
+
 program = lines:topLevelLine* __blank { type: 'program', body: lines}
 
 topLevelLine
@@ -30,7 +35,7 @@ line
   = SAMEDENT node:(!EOL s:statement {s}) comment? EOL* {node}
 
 block = children: ( INDENT c:line* DEDENT { c }) {children}
-  
+
 EOL = "\r\n" / "\n" / "\r"
 
 comment = '//' value:toTheEndOfLine EOL?
