@@ -1,6 +1,6 @@
 # Reiny
 
-Template engine for React
+Template engine for React / Mithril / Mercury
 
 ```
 npm install reiny --save

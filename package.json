@@ -46,7 +46,9 @@
     "react",
     "template",
     "jade",
-    "reiny"
+    "reiny",
+    "mithril",
+    "mercury"
   ],
   "bugs": {
     "url": "https://github.com/mizchi/reiny/issues"
