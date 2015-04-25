@@ -1,21 +1,23 @@
-exports.parse = parse = (source) ->
+{js_beautify} = require('js-beautify')
+compile = require './compiler'
+
+# string => AST
+exports.parse = parse = (source, options = {}) ->
   parse = require '../parser'
   preprocess = require './preprocess'
   try
-    return parse preprocess source
+    preprocessed = preprocess source
+    return parse preprocessed, options
   catch e
     console.error e
     throw 'ast parse error'
 
-beautify = require('js-beautify').js_beautify
-
-exports.compile = compile = (source, options = {}) ->
-  compile = require './compiler'
-  ast = parse(source, options)
-  code = compile(ast, options = {})
-  beautify code
-
+# AST => string
 exports._compile = _compile = (ast, options = {}) ->
-  compile = require './compiler'
-  code = compile(ast, options = {})
-  beautify code
+  code = compile(ast, options)
+  js_beautify code
+
+# string => string
+exports.compile = compile = (source, options = {}) ->
+  ast = parse(source, options)
+  _compile(source, options)

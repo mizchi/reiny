@@ -25,7 +25,7 @@ run = (target, argv) ->
       styleCompiler ast
     else
       # compile
-      reiny.compile source
+      reiny.compile source, argv
 
   # TODO: auto generate filename by extname
   if argv.out or argv.o

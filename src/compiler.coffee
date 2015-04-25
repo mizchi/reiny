@@ -20,14 +20,14 @@ buildProps = (node) ->
       if i.key is 'className'
         classNames.push i.expr
       else
-        obj[i.key] = compile(i.expr)
+        obj[i.key] = _compile(i.expr)
 
   # style
   if node.styles?
     style = {}
     for s in node.styles.children
       # camelize for react style
-      style[camelize s.key] = compile(s.expr)
+      style[camelize s.key] = _compile(s.expr)
     obj.style = style
 
   # classes and id
@@ -40,7 +40,7 @@ buildProps = (node) ->
         when 'key' then obj.key = '\'' + m.value + '\''
   if classNames.length > 0
     code = classNames
-      .map((e) -> compile(e))
+      .map((e) -> _compile(e))
       .join(',')
     obj.className = '[' + code + '].join(" ")'
   obj
@@ -86,35 +86,8 @@ buildPropTypes = (propTypeLines) ->
   # console.error expandObj propTypes
   expandObj propTypes
 
-module.exports = compile = (node) ->
+_compile = ->
   switch node.type
-    when 'program'
-      # TODO: optional export
-      exportTarget = 'module.exports'
-      codes = node.body
-        .filter (n) -> n.type isnt 'propTypeDeclaration'
-        .map (n) -> compile(n)
-      result = """
-      "use strict";
-      #{exportTarget} = function(__props) {
-        var reiny = require('reiny/runtime');
-        var __extend = reiny.xtend;
-
-        if(__props == null) __props = {};
-        return reiny.runtime(function($){
-          #{codes.join('\n')}
-        });
-      }
-      """
-
-      propTypes = node.body
-        .filter (n) -> n.type is 'propTypeDeclaration'
-
-      if propTypes.length > 0
-        result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
-
-      result
-
     when 'directElement'
       "$.direct(#{node.value})"
 
@@ -123,17 +96,17 @@ module.exports = compile = (node) ->
       propsStr = expandObj props
       elementCode =
         if isUpperCase(node.value.elementType[0])
-          compile(type:'identifier', value:node.value.elementType)
+          _compile(type:'identifier', value:node.value.elementType)
         else
-          compile(type:'string', value:node.value.elementType)
+          _compile(type:'string', value:node.value.elementType)
 
       unless node.children
         return "$(#{elementCode}, #{propsStr})"
 
       if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode', 'thisIdentifier']
-        return "$(#{elementCode}, #{propsStr}, #{compile node.children})"
+        return "$(#{elementCode}, #{propsStr}, #{_compile node.children})"
 
-      children = node.children.map (child) -> compile(child)
+      children = node.children.map (child) -> _compile(child)
       childrenCode = 'function(){' + (children?.join(';') ? '') + ';}'
       "$(#{elementCode}, #{propsStr}, #{childrenCode})"
 
@@ -153,9 +126,9 @@ module.exports = compile = (node) ->
       throw 'propTypeDeclaration is only allowed on toplevel'
 
     when 'if'
-      condCode = compile node.condition
+      condCode = _compile node.condition
 
-      children = node.body.map (child) -> compile(child)
+      children = node.body.map (child) -> _compile(child)
       childrenCode = children.join(';')
 
       ifCode = """
@@ -164,10 +137,10 @@ module.exports = compile = (node) ->
 
       if node.consequents?.length
         for consequent in node.consequents
-          consequentCondCode = compile consequent.condition
+          consequentCondCode = _compile consequent.condition
           consequentCode =
             consequent.body
-              .map((child) -> compile(child))
+              .map((child) -> _compile(child))
               .join(';')
 
           ifCode += "else if(#{consequentCondCode}) { #{consequentCode} }"
@@ -175,7 +148,7 @@ module.exports = compile = (node) ->
       if node.alternate?
         alternateChildrenCode =
           node.alternate.body
-            .map((child) -> compile(child))
+            .map((child) -> _compile(child))
             .join(';')
         ifCode += "else { #{alternateChildrenCode} }"
 
@@ -183,24 +156,24 @@ module.exports = compile = (node) ->
 
     when 'forIn'
       bodyCode = node.body
-        .map((c) -> compile(c) + ';')
+        .map((c) -> _compile(c) + ';')
         .join('')
       """
-      for(var __i in #{compile node.right}) {
+      for(var __i in #{_compile node.right}) {
         #{if node.second? then "var #{node.second.value} = __i;" else ""}
-        var #{node.left.value} = #{compile node.right}[__i];
+        var #{node.left.value} = #{_compile node.right}[__i];
         #{bodyCode};
       }
       """
 
     when 'forOf'
       bodyCode = node.body
-        .map((c) -> compile(c) + ';')
+        .map((c) -> _compile(c) + ';')
         .join('')
       """
-      for(var __i in #{compile node.right}) {
+      for(var __i in #{_compile node.right}) {
         #{if node.second? then "var #{node.second.value} = __i;" else ""}
-        var #{node.left.value} = #{compile node.right}[__i];
+        var #{node.left.value} = #{_compile node.right}[__i];
         #{bodyCode};
       }
       """
@@ -226,3 +199,29 @@ module.exports = compile = (node) ->
       "__props\.#{node.value}"
     else
       throw 'unknow node: ' + node.type
+
+module.exports = compile = (node, options = {}) ->
+  exportTarget = 'module.exports'
+  codes = node.body
+    .filter (n) -> n.type isnt 'propTypeDeclaration'
+    .map (n) -> _compile(n)
+  result = """
+  "use strict";
+  #{exportTarget} = function(__props) {
+    var reiny = require('reiny/runtime');
+    var __extend = reiny.xtend;
+
+    if(__props == null) __props = {};
+    return reiny.runtime(function($){
+      #{codes.join('\n')}
+    }, {type: #{options.target ? 'react'}});
+  }
+  """
+
+  propTypes = node.body
+    .filter (n) -> n.type is 'propTypeDeclaration'
+
+  if propTypes.length > 0
+    result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
+
+  result
