@@ -7,4 +7,15 @@ runtime = (block, options = {}) ->
 
 module.exports = runtime
 module.exports.runtime = runtime
-module.exports.xtend = require 'xtend'
+runtime.xtend = xtend = require 'xtend'
+
+# createReactComponent(template:(props:Object) => ReactElement, ...mixins): ReactComponent
+#
+# Example.
+# Component = reiny.createReactComponent require('./template'),
+#   onClick: -> console.log 'cliced'
+runtime.createReactComponent = (template, mixins...) ->
+  React.createClass xtend({},
+    propTypes: template.propTypes
+    render: -> template(xtend {}, @, @props)
+  , mixins...)
