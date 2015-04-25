@@ -103,10 +103,10 @@ _compile = (node) ->
       unless node.children
         return "$(#{elementCode}, #{propsStr})"
 
-      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededCode', 'thisIdentifier']
+      if node.children.type in ['identifier', 'boolean', 'number', 'string', 'inlineText', 'embededExpr','thisIdentifier']
         return "$(#{elementCode}, #{propsStr}, #{_compile node.children})"
 
-      children = node.children.map (child) -> _compile(child)
+      children = node.children?.map (child) -> _compile(child)
       childrenCode = 'function(){' + (children?.join(';') ? '') + ';}'
       "$(#{elementCode}, #{propsStr}, #{childrenCode})"
 
