@@ -29,7 +29,7 @@ exports.parse = parse = (source, options = {}) ->
   try
     return parser.parse preprocessed, options
   catch e
-    formatter = require('../src/format-error.coffee')
+    formatter = require('./format-error')
     throw new Error (formatter source, e)
 
 # AST => string
