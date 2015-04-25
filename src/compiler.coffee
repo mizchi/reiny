@@ -86,7 +86,7 @@ buildPropTypes = (propTypeLines) ->
   # console.error expandObj propTypes
   expandObj propTypes
 
-_compile = ->
+_compile = (node) ->
   switch node.type
     when 'directElement'
       "$.direct(#{node.value})"

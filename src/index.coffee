@@ -1,5 +1,4 @@
 {js_beautify} = require('js-beautify')
-compile = require './compiler'
 
 # string => AST
 exports.parse = parse = (source, options = {}) ->
@@ -14,10 +13,10 @@ exports.parse = parse = (source, options = {}) ->
 
 # AST => string
 exports._compile = _compile = (ast, options = {}) ->
-  code = compile(ast, options)
-  js_beautify code
+  compile = require './compiler'
+  js_beautify(compile(ast, options))
 
 # string => string
-exports.compile = compile = (source, options = {}) ->
+exports.compile = (source, options = {}) ->
   ast = parse(source, options)
   _compile(source, options)
