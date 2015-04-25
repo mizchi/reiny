@@ -207,19 +207,24 @@ module.exports = (node, options = {}) ->
     .filter((n) -> n.type isnt 'propTypeDeclaration')
     .map((n) -> _compile(n))
 
+  propTypes = node.body.filter (n) -> n.type is 'propTypeDeclaration'
+  propTypesCode = propTypes
+    .map((propType) -> 'var ' + propType.value.propertyName + ' = self.' + propType.value.propertyName + ';')
+    .join('\n')
+
   result = """
   "use strict";
   #{exportTarget} = function(self) {
     var reiny = require('reiny');
     var __extend = reiny.xtend;
     if(self == null) self = {};
+    #{propTypesCode}
     return reiny.runtime(function($){
       #{codes.join('\n')}
     }, {target: '#{options.target ? 'react'}'});
   }
   """
 
-  propTypes = node.body.filter (n) -> n.type is 'propTypeDeclaration'
   if propTypes.length > 0
     result += '\nvar _T = React.PropTypes;\nmodule.exports.propTypes =' + buildPropTypes(propTypes)
 
