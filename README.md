@@ -6,16 +6,21 @@ Template engine for React / Mithril / Mercury
 npm install reiny --save
 ```
 
-- gulp: [mizchi/gul-reiny](https://github.com/mizchi/gul-reiny "mizchi/gul-reiny")
+- gulp: [mizchi/gulp-reiny](https://github.com/mizchi/gulp-reiny "mizchi/gulp-reiny")
 - browserify: [mizchi/reinify](https://github.com/mizchi/reinify "mizchi/reinify")
+- atom mode: [mizchi/language-reiny](https://github.com/mizchi/language-reiny "mizchi/language-reiny")
+
+```
+apm install language-reiny
+```
 
 ## Goals
 
 - Jade like template engine
-- Generate react element
+- Generate react/mithril/mercury element
 - Inline css friendly
 - Inline babel preprocessor
-- (WIP) Inline propTypes
+- Inline propTypes
 
 ## Example
 
