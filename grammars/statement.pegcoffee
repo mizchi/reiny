@@ -48,10 +48,22 @@ directElement = '+(' _ symbol:dottableSymbol _ ')'
      __rp type: 'directElement', value: symbol
   }
 
-element = s:assignable props:props? _ styles:styles? _ children: _elementChildren?
-  {
-     __rp {type: 'element', value: s, children, props, styles}
-  }
+element
+  = '=' _ expr:expr
+    {
+      __rp
+        type: 'element'
+        value:
+          type: 'element'
+          elementType: 'span'
+          modifiers: []
+        children:expr
+    }
+  / s:assignable props:props? _ styles:styles? _ children: _elementChildren?
+    {
+       __rp {type: 'element', value: s, children, props, styles}
+    }
+
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
     / !EOL _ !'=' _ text:toTheEndOfLine { __rp {type: 'inlineText', value: text}}
