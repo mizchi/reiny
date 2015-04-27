@@ -182,7 +182,14 @@ _compile = (node) ->
       "/* #{node.value} */"
 
     when 'text'
-      "$('span', {}, '#{node.value}')"
+      # "$('span', {}, '#{node.value}')"
+      code =
+        if typeof node.value is 'string'
+          _wrapStr node.value
+        else
+          _compile(node.value)
+
+      "$.text(#{code})"
 
     when 'inlineText'
       "\'#{node.value}\'"

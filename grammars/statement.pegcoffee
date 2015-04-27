@@ -52,12 +52,8 @@ element
   = '=' _ expr:expr
     {
       __rp
-        type: 'element'
-        value:
-          type: 'element'
-          elementType: 'span'
-          modifiers: []
-        children:expr
+        type: 'text'
+        value: expr
     }
   / s:assignable props:props? _ styles:styles? _ children: _elementChildren?
     {

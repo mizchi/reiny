@@ -21,7 +21,7 @@
     "pegjs": "^0.8.0",
     "pegjs-coffee-plugin": "^0.2.2",
     "strip-comments": "^0.3.2",
-    "virdy": "^0.3.0",
+    "virdy": "^0.3.1",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
