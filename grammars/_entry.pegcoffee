@@ -89,7 +89,7 @@ __blank = $([ \n\t\r]*)
 
 symbol = $([a-zA-Z_] [a-zA-Z0-9_]*)
 dottableSymbol = $(symbol ('.' symbol)*)
-hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z\d_-]*)
+hyphenizableSymbol = $([a-zA-Z_-] [a-zA-Z0-9_-]*)
 
 reserved
   = SharedKeywords

@@ -1,4 +1,5 @@
-- var bar = 'baz'
+- let bar = 'baz'
 .foo(
   className = bar
 )
+.pure-u-1-3

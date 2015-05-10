@@ -62,8 +62,8 @@ element
 
   _elementChildren
     = EOL INDENT c:line* DEDENT { c }
-    / !EOL _ !'=' _ text:toTheEndOfLine { __rp {type: 'inlineText', value: text}}
-    / !EOL _ '=' _ expr: expr {expr}
+    / !EOL _ !'=' __ text:toTheEndOfLine { __rp {type: 'inlineText', value: text}}
+    / !EOL _ '=' __ expr: expr {expr}
   assignable
     =
       elementName:singleIdentifier modifiers:modifier*
